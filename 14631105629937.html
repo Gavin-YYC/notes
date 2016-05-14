@@ -1,0 +1,359 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  css3：text-overflow - 我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div>
+	<article class="hentry" role="article">
+	<header>
+			  	<h1 class="entry-title">css3：text-overflow</h1>
+				<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" pubdate data-updated="true">2016/5/13</time></p>
+			 </header>
+		  	<div class="entry-content">
+			  	<h2 id="toc_0">1、简介</h2>
+
+<p>css的<code>text-overflow</code>属性是用来解决当文本超出元素范围时该怎么截断的问题。</p>
+
+<h2 id="toc_1">2、使用方法</h2>
+
+<p>在之前的实现中，文本溢出一般是通过<code>overflow: hidden</code>来实现的，或者通过js来判断字符的长度，实现截取然后多余的补上<code>...</code>替代符号。现在直接通过css的一个属性就可完成此项工作，下面先看看<code>text-overflow</code>的语法。</p>
+
+<pre><code>element {
+  text-overflow: normal | clip | ellipsis | string;
+}
+</code></pre>
+
+<p>下面解释一下参数：</p>
+
+<ul>
+<li><code>normal</code>：正常情况下，效果和clip相同</li>
+<li><code>clip</code>： 如果超出box，则内容直接截断，不会显示<code>...</code>标记</li>
+<li><code>ellipsis</code>：文本溢出时显示<code>...</code>标记，在最后一个字符中插入</li>
+<li><code>string</code>：用户可自定义的分隔符，比如<code>... more</code></li>
+</ul>
+
+<blockquote>
+<p>注意：经测试，只有firefox浏览器支持string属性，可以自定义分隔符</p>
+</blockquote>
+
+<p>这里需要注意的是，<code>text-overflow</code>单独使用是没有任何效果的，需要配合其他css属性一起使用：</p>
+
+<pre><code>element {
+  text-overflow: ellipsis;
+  // 需要配合如何属性一起使用
+  white-space: nowrap;
+  overflow: hidden;
+}
+</code></pre>
+
+<blockquote>
+<p>text-overflow 只发生在block与inline-block元素中，因为这些元素需要宽度来防止内容过多时溢出。当设置direction属性为：rtl，此时不会出现左边没有出现...的标记符。</p>
+</blockquote>
+
+<h2 id="toc_2">3、测试例子</h2>
+
+<p><a href="http://htmlpreview.github.io/?https://github.com/Gavin-YYC/html5demos/blob/master/css3-text-overflow.html">点击进入在线Demo</a></p>
+
+<h2 id="toc_3">4、如何实现多行文本的溢出处理</h2>
+
+<p>上面通过<code>white-space: nowrap</code>设置后会产生一个问题，即文本不会换行，而现实中经常会碰到的需求是：我们有多行文本，如果溢出则进行分割，这种情况下怎么办呢？</p>
+
+<ul>
+<li><p>方案1：<code>-webkit-line-clamp：line-number</code>，webkit内核支持，其他浏览器不支持</p>
+
+<pre><code>.text-overflow-multy-line {
+  word-break: normal;
+  height: 120px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  // 最后三个属性必须支持
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+</code></pre></li>
+<li><p>方法2：<code>text-overflow: -o-ellipsis-lastline;</code>，只有Opera浏览器支持</p>
+
+<pre><code>p {
+    overflow: hidden;
+    white-space: normal;
+    height: 3em;
+    text-overflow: -o-ellipsis-lastline;
+}
+</code></pre></li>
+<li><p>方法3：jquery</p>
+
+<pre><code>$(&quot;.figcaption&quot;).each(function(i){
+  var divH = $(this).height();
+  var $p = $(&quot;p&quot;, $(this)).eq(0);
+  while ($p.outerHeight() &gt; divH) {
+      $p.text($p.text().replace(/(\s)*([a-zA-Z0-9]+|\W)(\.\.\.)?$/, &quot;...&quot;));
+  };
+});
+</code></pre></li>
+<li><p>方法4：::after</p>
+
+<pre><code>p::after {
+  content:&quot;...&quot;;
+  font-weight:bold;
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding:0 20px 1px 45px;
+}
+</code></pre></li>
+<li><p>方案5： 插件方法，<a href="https://github.com/josephschmitt/Clamp.js">Clamp.js</a></p></li>
+</ul>
+
+<h2 id="toc_4">5、老版本的text-overflow</h2>
+
+<p>老版本的<code>text-overflow</code>还有其他属性，比如：<code>text-overflow: ellipsis ellipsis;</code>，其有两个参数，分别控制着容器内左右两边的溢出，这个时候需要设置<code>text-align:center</code>，这个属性已经废弃了。不知道如何实现这种效果的，难道是在容器中间取一个更小的容器？</p>
+
+<p>另外一个老版本的属性是：<code>ellipsis-word</code>，过去<code>text-overflow</code>是<code>text-overflow-mode</code>与<code>text-overflow-ellipsis</code>的缩写，现在那些单独的属性都不存在了。</p>
+
+<h2 id="toc_5">6、浏览器兼容性</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/362468298.png" alt=""/></p>
+
+<h2 id="toc_6">7、参考文档</h2>
+
+<ul>
+<li><p><a href="http://c7sky.com/text-overflow-ellipsis-on-multiline-text.html">多行文本溢出显示省略号(...)的方法</a></p></li>
+<li><p><a href="https://css-tricks.com/almanac/properties/t/text-overflow/">text-overflow</a></p></li>
+<li><p><a href="https://www.w3.org/wiki/Text-overflow_middle_cropping">Text-overflow middle cropping</a></p></li>
+<li><p><a href="http://www.css88.com/archives/5206">多行文本溢出显示省略号(…)全攻略</a></p></li>
+</ul>
+
+			</div>
+
+		
+	  
+		<footer>
+		 <p class="meta">
+
+			<strong>Categories:</strong>&nbsp; 
+			<span class="categories">
+			
+			    <a class='category' href='css3.html'>css3</a>&nbsp;
+			 
+			</span>
+		    </p>
+		    <p class="meta">
+		      
+		 </p>
+	    
+		<div class="sharing">
+			
+		</div>
+
+	    <p class="meta">
+	    
+	        <a class="basic-alignment left" href="14631105629966.html" 
+	        title="Previous Post: css3：web font">&laquo; css3：web font</a>
+	    
+	    
+	        <a class="basic-alignment right" href="14631105629885.html" 
+	        title="Next Post: css3：伪元素">css3：伪元素 &raquo;</a>
+	    
+	    </p>
+	  </footer>
+	</article>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>

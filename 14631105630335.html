@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  JavaScript：scrollIntoView - 我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div>
+	<article class="hentry" role="article">
+	<header>
+			  	<h1 class="entry-title">JavaScript：scrollIntoView</h1>
+				<p class="meta"><time datetime="2016-05-13T11:36:03+08:00" pubdate data-updated="true">2016/5/13</time></p>
+			 </header>
+		  	<div class="entry-content">
+			  	<blockquote>
+<p>scrollIntoView可以实现让元素滚动到视图(可视)范围内，其接受一个可选参数，true / false</p>
+</blockquote>
+
+<h2 id="toc_0">1.使用方法</h2>
+
+<p>使用方法：</p>
+
+<pre><code>ele.scrollIntoView( arg );
+</code></pre>
+
+<h2 id="toc_1">2、参数介绍</h2>
+
+<h3 id="toc_2">2.1 参数是boolean形式</h3>
+
+<p>如果是：<code>true</code>，则表示元素滚动到视图的<code>顶部</code>，默认为<code>true</code></p>
+
+<pre><code>ele.scrollIntoView( true );
+</code></pre>
+
+<p>如果是：<code>false</code>，则表示元素滚动到视图的<code>底部</code></p>
+
+<pre><code>ele.scrollIntoView( false );
+</code></pre>
+
+<h3 id="toc_3">2.2 参数是对象形式</h3>
+
+<blockquote>
+<p>这种形式，目前只有firefox 36+支持。</p>
+</blockquote>
+
+<p>另外，其还接受一个对象格式：<code>scrollIntoViewOptions</code>，其有如下选项：</p>
+
+<pre><code>{
+    behavior: &quot;auto&quot;  | &quot;instant&quot; | &quot;smooth&quot;,
+    block:    &quot;start&quot; | &quot;end&quot;
+}
+</code></pre>
+
+<p>其中<code>behavior</code>默认是<code>instance</code>，<code>block</code>默认是<code>start</code>。</p>
+
+<p>调用方式如下：</p>
+
+<pre><code>ele.scrollIntoView({
+  behavior: &quot;smooth&quot;,
+  block:    &quot;end&quot;
+});
+</code></pre>
+
+<blockquote>
+<p>注意：</p>
+
+<p>如果block是“start”，相当于设置了参数：true</p>
+
+<p>如果block是“end”，相当于设置了参数：false</p>
+</blockquote>
+
+<h2 id="toc_4">3、具体示例</h2>
+
+<p><a href="http://sandbox.runjs.cn/show/u1ogecdw">Demo地址</a></p>
+
+<blockquote>
+<p>注意：节点可能不会特别准确的滚动到滚动区域的上边界或者下边界，这取决于其他元素的布局。</p>
+
+<p>Depending on the size of the given object and the current window, this method might not be able to put the item at the very top or very bottom, but will position the object as close to the requested position as possible.</p>
+</blockquote>
+
+<h2 id="toc_5">4、浏览器兼容性</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/23482348923.png" alt="浏览器兼容性：http://7mj4a6.com1.z0.glb.clouddn.com/23482348923.png"/></p>
+
+<h2 id="toc_6">5、scrollIntoViewIfNeeded(align)</h2>
+
+<p>该属性和<code>scrollIntoView</code>属性类似，不同的是，这个属性可以实现自我判断，只有元素不在可视区域内才会滚动到可视区。</p>
+
+<p>如果元素已经在可视区，则不会发生滚动。</p>
+
+<p>该方法同样接受一个参数，是否居中显示，<code>true</code>表示垂直居中， <code>false</code>表示什么都不做。</p>
+
+<h2 id="toc_7">5、资料来源</h2>
+
+<ul>
+<li><p><a href="https://www.w3.org/TR/2009/WD-html5-20090423/editing.html#dom-scrollintoview">https://www.w3.org/TR/2009/WD-html5-20090423/editing.html#dom-scrollintoview</a></p></li>
+<li><p><a href="https://msdn.microsoft.com/en-us/library/ms536730(v=vs.85).aspx">https://msdn.microsoft.com/en-us/library/ms536730(v=vs.85).aspx</a></p></li>
+<li><p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoViewIfNeeded">https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoViewIfNeeded</a></p></li>
+<li><p><a href="http://caniuse.com/#search=scrollintoview">http://caniuse.com/#search=scrollintoview</a></p></li>
+</ul>
+
+			</div>
+
+		
+	  
+		<footer>
+		 <p class="meta">
+
+			<strong>Categories:</strong>&nbsp; 
+			<span class="categories">
+			
+			    <a class='category' href='JavaScript.html'>JavaScript</a>&nbsp;
+			 
+			</span>
+		    </p>
+		    <p class="meta">
+		      
+		 </p>
+	    
+		<div class="sharing">
+			
+		</div>
+
+	    <p class="meta">
+	    
+	        <a class="basic-alignment left" href="14631105630408.html" 
+	        title="Previous Post: JavaScript：throttle and debounce">&laquo; JavaScript：throttle and debounce</a>
+	    
+	    
+	        <a class="basic-alignment right" href="14631105630249.html" 
+	        title="Next Post: JavaScript：Web Notifications">JavaScript：Web Notifications &raquo;</a>
+	    
+	    </p>
+	  </footer>
+	</article>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>

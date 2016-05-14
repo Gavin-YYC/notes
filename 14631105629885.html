@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  css3：伪元素 - 我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div>
+	<article class="hentry" role="article">
+	<header>
+			  	<h1 class="entry-title">css3：伪元素</h1>
+				<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" pubdate data-updated="true">2016/5/13</time></p>
+			 </header>
+		  	<div class="entry-content">
+			  	<blockquote>
+<p>为了与伪类区分，css3对伪元素进行了调整，在原来一个冒号的基础上增加了一个冒号。在IE6-8值只支持单冒号写法，现代浏览器支持两种写法。</p>
+</blockquote>
+
+<h2 id="toc_0">1、伪元素</h2>
+
+<p>  利用伪元素实现首字母下沉效果与首行效果：<a href="http://sandbox.runjs.cn/show/dcwznqvt">http://sandbox.runjs.cn/show/dcwznqvt <br/>
+</a></p>
+
+<ul>
+<li><p><code>::first-letter</code>选中元素中的首字母 </p></li>
+<li><p><code>::first-line</code>选中元素中的首行</p></li>
+<li><p><code>::selectoion</code>可以对用户选中的文本进行修饰，比如选中文本的<strong>颜色</strong>、<strong>背景色</strong>，<code>::selection</code>只支持该两个属性。</p></li>
+</ul>
+
+<p>  在属性选择器中容器混淆的是：<code>E[attr~=val]</code>与<code>E[attr*=val]</code></p>
+
+<p>两者都可以选择包含val的元素，不同之处在于，<code>[attr~=val]</code>是选中带有空格分开的具有多个属性的元素，<code>[attr*=val]</code>表示只要有val就可以选中，比如：</p>
+
+<pre><code>&lt;p class=&quot;header fixed&quot;&gt;这是一个段落。&lt;/p&gt;
+</code></pre>
+
+<p>则两个选择器都会选中，但是：</p>
+
+<pre><code>&lt;p class=&quot;headerfixed&quot;&gt;这是一个段落。&lt;/p&gt;
+</code></pre>
+
+<p>只有<code>[class*=header]</code>能够选中。  选择器<code>[attr|=val]</code>可选择带有“val-”的元素，比如：“col-”，常用于设置多语言版本：lang-zh </p>
+
+<ul>
+<li><code>^</code> 表示以什么开头</li>
+<li><code>$</code> 表示以什么结尾</li>
+<li><code>*</code> 表示匹配任意字符  伪元素</li>
+</ul>
+
+<h2 id="toc_1">2、::before 与 :: after</h2>
+
+<p><code>::before</code>与<code>::after</code>常用于<strong>清除浮动</strong>，<strong>设置字体</strong>，插入的元素不是DOM的一部分，但同样可以设置样式。要让该伪元素生效，需要设置content属性。  </p>
+
+<p>content属性的设置很灵活，可以这是计数器，对页面元素进行计数并显示。也可以获取当前元素的属性<code>attr()</code>并进行设置：</p>
+
+<p>如：<code>content: attr(class)</code>，表示插入了该元素的class值。  </p>
+
+<p>另外一个有用的是在多语言版本中的设置，因为每种语言可能对应不同的引号，所以可以用::before与::after设置不同语言的引号。</p>
+
+<pre><code>:lang( zh ) q {
+  quotes: ‘“’ ‘”’;
+}
+p::before {
+  content: open-quote;
+}
+p::after {
+  content: close-quote;
+}
+</code></pre>
+
+<h2 id="toc_2">3、web font</h2>
+
+<p>  另外，在自定义字体的时候也多用<code>content</code>来完成。这一部分会在以后学习css3的font的时候总结，这里记录一下：</p>
+
+<blockquote>
+<p>平时使用的字体是用的16进制的Unicode编码，在Unicode字符集中，E000至F8FF属于用户造字区，原本是空的，用户可以在里面定义字符的形状，我们所用的webfont就在这一区域。</p>
+</blockquote>
+
+<p>用户设定好字体文件后，可以直接在页面调用\f001类似的编码引用字体，但是这样开发者不知道该代码所指向的图标具体是什么，所以一般会定义一个class用content来引入该16进制编码:</p>
+
+<pre><code>.font_close::before { 
+  content: &#39;\f001&#39;
+}
+</code></pre>
+
+<p> 所以在使用的时候，只需要进行如下标记：</p>
+
+<pre><code>&lt;a class=&quot;font font_close&quot;&gt;&lt;/a&gt;
+</code></pre>
+
+<p>即可引入图标。</p>
+
+<h2 id="toc_3">4、css3选择器知识树</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/css3-selector.png" alt="css3-selector.png"/></p>
+
+			</div>
+
+		
+	  
+		<footer>
+		 <p class="meta">
+
+			<strong>Categories:</strong>&nbsp; 
+			<span class="categories">
+			
+			    <a class='category' href='css3.html'>css3</a>&nbsp;
+			 
+			</span>
+		    </p>
+		    <p class="meta">
+		      
+		 </p>
+	    
+		<div class="sharing">
+			
+		</div>
+
+	    <p class="meta">
+	    
+	        <a class="basic-alignment left" href="14631105629937.html" 
+	        title="Previous Post: css3：text-overflow">&laquo; css3：text-overflow</a>
+	    
+	    
+	        <a class="basic-alignment right" href="14631105629861.html" 
+	        title="Next Post: css3：linear-gradient">css3：linear-gradient &raquo;</a>
+	    
+	    </p>
+	  </footer>
+	</article>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>

@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  jQuery - 我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div class="blog-index">
+
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105630086.html">jQuery：Deferred and Promise</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:03+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<blockquote>
+<p>简介</p>
+
+<p>延迟对象是jQury中很重要的一部分，包括Ajax、动画还有其他一些异步操作基本都用延迟对象进行了改写。延迟对象可以让你不关心耗时任务什么时候结束，你只需指定该任务结束后执行什么样的回调即可，在等待的过程中，其他业务逻辑代码依然可以继续运行。</p>
+</blockquote>
+
+<h2 id="toc_0">一、jQuery.Deferred( [beforeStar] );</h2>
+
+<p>该方法创建一个延迟对象，并可以传入一个可选的函数，该函数会在返回延迟对象前被调用。创建完成后，会返回一个延迟对象实例，该实例上有该延迟对象的一些方法，这些方法可以进行链式调用。例如：</p>
+
+<pre><code>// 创建一个延迟对象
+var d = $.Deferred( function () {
+  alert( &quot;beforeStar&quot; );
+});
+// 任务结束后的调用
+d.done( function(){
+  alert(&quot; 任务成功完成！&quot;);
+});
+// 模拟耗时任务
+setTimeout( function(){
+  d.resolve();
+}, 3000);
+</code></pre>
+
+<h1 id="toc_1">二、回调队列</h1>
+
+<p>延迟对象提供将回调添加入回调队列的方法，该方法是通过jquery的回调对象来完成的，即jQuery.Callbacks()的add()方法；同时，还有调用回调函数的方法，类似fire()方法。不过其底层还是通过回调队列进行管理。</p>
+
+<pre><code>var d = $.Deferred();
+var fn1 = function () { alert( &quot;fn1&quot; ) };
+var fn1 = function () { alert( &quot;fn1&quot; ) };
+var fn1 = function () { alert( &quot;fn1&quot; ) };
+// 类似 callbacks.add()，添加三个回调
+d.done( fn1 ).fail( fn2 ).progress( fn3 );
+//模拟耗时任务
+setTimeot( function(){
+    // 类似callbacks.fire()，执行回调队列中的回调
+    d.reject();
+}, 3000);
+</code></pre>
+
+<p>以上，可以将延迟方法按照回调的add()、fire()进行划分，可以更方便的理解回调。</p>
+
+<blockquote>
+<p>done() | fail() | progress() | then() | always() 类似于callbacks.add()方法<br/>
+reject() | resolve() | notify() rejectWith() | resolveWith() | notifyWith() 类似于fire()方法</p>
+</blockquote>
+
+<h1 id="toc_2">三、常用方法</h1>
+
+<h3 id="toc_3">3.1 resolve()  |  done()</h3>
+
+<p>将回调状态更改为<code>resolve</code>，并将自动触发所有的<code>done</code>回调函数，并可以传入相应参数。这里的<code>done</code>回调函数可以是done()方法中的，也可以是then()方法中的。如下例子：</p>
+
+<pre><code>var d = $.Deferred();
+d.done( function ( args ) {
+    alert( args );
+});
+setTimeout(function(){
+    d.resolve( &quot;完成啦，快现身！&quot; );
+}, 3000)
+</code></pre>
+
+<p>另外一种是resolveWith( context [  , args ] )，该方法不仅可以传入参数自动触发<code>完成回调函数</code>还能指定回调函数的context（上下文），即可以改变回调函数中的<code>this</code>指向，比如：</p>
+
+<pre><code>var d = $.Deferred();
+d.done( function ( args ) {
+    console.log( this ); // Object，即Deferred对象
+    alert( args );   // 同时可以接受参数
+});
+setTimeout(function(){
+    d.resolveWith( d, &quot;又完成啦，现身吧！&quot;);
+}, 3000);
+</code></pre>
+
+<h3 id="toc_4">3.2 reject()  |  fail()</h3>
+
+<p>和resolve()使用方法完全相同，只是resolve是解决，reject是拒绝。</p>
+
+<p>将回调状态更改为<code>reject</code>，并将自动触发所有的<code>fail</code>回调函数，并可以传入相应参数。这里的<code>fail</code>回调函数可以是fail()方法中的，也可以是then()方法中的。如下例子：</p>
+
+<pre><code>var d = $.Deferred();
+d.fail( function ( args ) {
+    alert( args );
+});
+setTimeout(function(){
+    d.reject( &quot;被拒了！&quot; );
+}, 3000)
+</code></pre>
+
+<p>同样，与resolveWith()相对应的是rejectWith()方法，该方法同样可以传入context与args，使用方式和resolveWith()相同，不做例子了。</p>
+
+<h3 id="toc_5">3.3 notify()  |  progress()</h3>
+
+<p>一个回调的状态可能是<code>resolve</code>与<code>reject</code>，还有一个状态是<code>pending</code>，即回调正在进行中，此时状态既没有完成也没有拒绝，处在中间的进度态。而<code>notify()</code>方法就是处理这个状态的调度。</p>
+
+<p>执行该方法后，会自动触发<code>progress()</code>回调，或者<code>then()</code>方法中的第三个参数。基本使用方式和上述两个相同：</p>
+
+<pre><code>var d = $.Deferred();
+d.progress( function ( args ) {
+    alert( args );
+});
+setTimeout(function(){
+    d.notify( &quot;进度中&quot; );
+}, 3000)
+</code></pre>
+
+<p>可以通过notify()方法来实现进度条或者上次提示等功能。比如，下面模仿一个进度条的实现：</p>
+
+<pre><code>var d = $.Deferred();
+// 此处只是模拟使用
+d.progress( function ( args ) {
+    $(&quot;.bar&quot;).css( &quot;width&quot;, now + &quot;%&quot; ).html(now + &quot;%&quot;);
+});
+
+/* 模仿回调 */
+var count = 1024;
+var now = 0;
+setInterval( function() {
+    now = parseInt( now +  Math.random() * 20 );
+    if ( now &lt; count ) {
+        d.notify( (now / count * 100).toFixed( 2 ) );
+    } else {
+        d.resolve( &quot;100&quot; );
+    }
+}, 100);
+</code></pre>
+
+<p>这里做了一个在线演示：<a href="http://sandbox.runjs.cn/show/4y1ut71w">进度条</a>。</p>
+
+<h3 id="toc_6">3.4 全能的then()</h3>
+
+<p>从对以上的用法总结上来看，<code>then()</code>基本在每一小结都出现了，看来这个<code>then()</code>确实很强大，其实其也并不是很强大，只是很全能，它能一下子把done()、fail()、progress()收入囊中，不必单独拿出来一个个的写，其语法有三种：</p>
+
+<ul>
+<li> deferred.then( doneCallback );</li>
+<li> deferred.then( doneCallback, failCallback );</li>
+<li> deferred.then( doneCallback, failCallback, progressCallback );</li>
+</ul>
+
+<p>其中的doneCallback、failCallback、progressCallback是指成功、失败、进度时的回调函数。</p>
+
+<p>比如：</p>
+
+<pre><code>function done(){ alert( &quot;success&quot; ) };
+function fail(){ alert( &quot;error&quot; ) };
+function progress(){ alert( &quot;progress&quot; ) };
+
+var d = $.Deferred();
+d.then( done, fail, progress );
+setTimeout(function(){
+    d.resolve( &quot;完成！&quot; );
+}, 3000)
+</code></pre>
+
+<p>这样，把三个回调都写到了一个<code>then()</code>中，这样回调是什么状态都会流通到<code>then()</code>中，然后在去执行相应的回调。</p>
+
+<h3 id="toc_7">3.5 多个回调</h3>
+
+<p>jquery的延迟对象的强大之后是，我可以给一个延迟对象添加多个回调！这些回调会一次被执行，比如：</p>
+
+<pre><code>// 直接罗列回调
+var d = $.Deferred();
+d.done( fn1, fn2 );
+setTimeout(function(){
+    d.resolve();
+}, 1000)
+
+// 或者才用数组的形式
+var d = $.Deferred();
+d.done( [ fn1, fn2, fn3 ] );
+setTimeout(function(){
+    d.resolve();
+}, 1000)
+
+// 也可以连着写多个done()
+var d = $.Deferred();
+d.done( fn1 ).done( fn2 ).done( fn3 );
+setTimeout(function(){
+    d.resolve();
+}, 1000)
+</code></pre>
+
+<p>这是用<code>done()</code>做了个实例，<code>fail()</code>、<code>progress()</code>、<code>then()</code>都可以这样连用。也可以混合连用，先<code>done().fail().done().progress().fail()</code>想怎么连就怎么连，充分利用链式调用满足自己。</p>
+
+<h3 id="toc_8">3.6 延迟对象的状态：state()</h3>
+
+<p>当我们创建完一个延迟对象后，有时候需要得到延迟对象的状态，并根据这个状态来执行相应的方法。<code>state()</code>方法可以返回这个状态。延迟对象的状态主要有：</p>
+
+<ul>
+<li> resolve   任务执行完成</li>
+<li> reject  任务执行失败</li>
+<li> pending    任务正在进行中</li>
+</ul>
+
+<p>使用如下：</p>
+
+<pre><code>var d = $.Deferred();
+console.log( d.state() ); // pending
+d.always( function () {
+    if ( d.state !== &#39;pending&#39; ) {
+        return &quot;sorry&quot;;
+    }
+    console.log( d.state() );
+});
+setTimeout( function() {
+    d.resolve();
+}, 3000);
+</code></pre>
+
+<h1 id="toc_9">四、deferred.promise()</h1>
+
+<p>现在我们可以很轻松的切换延迟对象的状态，并执行相应的回调，但是还有一点，如果我们创建的延迟对象是全局的，那么该延迟对象的状态就有可能被外部更改。具体可参考阮一峰的介绍博客：<a href="http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html">jQuery的deferred对象详解</a>，另外，也有一篇比较详细介绍promise的文章：<a href="http://blog.allenm.me/2012/01/jquery_deferred_promise_method/">jQuery deferred 对象的 promise 方法</a>。</p>
+
+<p>该方法返回延迟对象的一个<code>promise</code>对象。<code>promise</code>对象也有一些方法，和deferred对象的方法相似，只不过隐藏了deferred对象的更改状态的方法：比如<code>resolve()</code>，<code>reject()</code>，<code>notify()</code>，<code>resolveWith()</code>，<code>rejectWith()</code>，<code>notifyWith()</code>，这些方法需要我们手动触发才能切换回调的状态，而<code>promise</code>对象把这些都省去了，你只能通过<code>done()</code>、<code>fail()</code>、<code>then()</code>添加回调或者判断状态来添加回调。</p>
+
+<p>下面通过一些例子来说明promise的作用：</p>
+
+<h3 id="toc_10">4.1 全局的延迟对象被修改</h3>
+
+<pre><code>var d = $.Deferred();
+var wait = function() {
+    setTimeout( function() {
+        d.resolve();
+    }, 1000);
+    return d.promise();
+}
+d.reject();
+// 此时不会有任何的弹出提示
+$.when( wait() ).done( function() {
+    alert(&quot;延迟对象状态被外部修改了！&quot;);
+});
+</code></pre>
+
+<p>或者这样：</p>
+
+<pre><code>var d = $.Deferred();
+var wait = function( d ) {
+    setTimeout( function() {
+        d.resolve();
+    }, 1000);
+    return d.promise();
+}
+// 此时会立即弹出提示“a”
+$.when( wait() ).done( function(){
+    alert(&quot;a&quot;);
+});
+d.resolve();
+</code></pre>
+
+<p>上面的两种情况相同，即如果延迟对象是全局的，在调用任务前状态已经改为reject了，所以不会提示内容，第二种情况是，$.when()去执行异步回调，回调会在1s后执行，那么程序继续往下执行代码，状态被改为resolve，所以弹出立马弹出。</p>
+
+<h3 id="toc_11">4.2 安全保护延迟不被修改</h3>
+
+<p>安全保护延迟对象不被修改，一个解决方法便是不设全局的延迟对象，只在任务中声明：然后返回该延迟对象的<code>promise</code>对象，因为promise对象是不具有操作状态的方法的，所以这样外部就无法修改延迟对象的状态了。</p>
+
+<p>例如：</p>
+
+<pre><code>// 创建一个全局的延迟对象
+var d = $.Deferred();
+var wait = function( d ) {
+    // 创建一个局部的延迟对象
+    var d = $.Deferred();
+    setTimeout( function() {
+        d.resolve();
+    }, 1000);
+    return d.promise();
+}
+// 全局延迟对象状态被修改
+d.resolve();
+// 不影响内部的延迟对象，依然是1s后弹出“a”
+$.when( wait() ).done( function(){
+    alert(&quot;a&quot;);
+});
+</code></pre>
+
+<h1 id="toc_12">五、jQuery.when();</h1>
+
+<p>jquery的延迟对象还有一个强大之处在于，你不仅可以给一个延迟对象添加无数个回调，你还可以同时使用多个延迟对象，并把结果给一个回调！利用<code>jQuery.when()</code>即可实现这种效果。</p>
+
+<h3 id="toc_13">5.1</h3>
+
+<p>在上面的例子中已经用到了<code>$.when()</code>方法，该方法不仅可以接受一个延迟对象或者延迟对象的<code>promise</code>对象，还可以接受多个延迟对象，并返回一个“宿主”延迟对象，<code>$.when()</code>会同时请求多个延迟对象，只有等到所有延迟对象都解决时，才执行done()方法，如果有一个延迟对象reject，则执行fail()方法。</p>
+
+<pre><code>$.when( $.ajax(), $.ajax() )
+    .done( function() {})
+    .fail( function() {});
+</code></pre>
+
+<h3 id="toc_14">5.2 传入参数</h3>
+
+<p>也可以将任意参数传递给<code>$.when()</code>，则会立即执行done()回调。</p>
+
+<pre><code>$.when( 123 )
+    .done( function (){
+        alert(&quot;a&quot;);
+    })
+    .fail( function (){
+        alert(&quot;b&quot;);
+    });
+</code></pre>
+
+
+		</div>
+
+		
+
+	</article>
+  
+	<div class="pagination">
+	
+<a href="archives.html">Blog Archives</a>
+	 
+	    
+	</div>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>

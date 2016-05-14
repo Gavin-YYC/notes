@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div class="blog-index">
+
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105629790.html">css3：border-radius</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<h2 id="toc_0">1、基本书写方式</h2>
+
+<h3 id="toc_1">1.1 设置四个值</h3>
+
+<p>基本形式也是简写形式，例如：</p>
+
+<pre><code>div {
+  border-radius: 10px 5px 10px 5px;
+}
+</code></pre>
+
+<p>这样可以给<code>div</code>的四个角都设置<code>border-radius</code>属性，分别对应左上角（<code>top-left</code>）、右上角（<code>top-right</code>）、左下角（<code>bottom-left</code>）、左下角（<code>bottom-right</code>）。</p>
+
+<blockquote>
+<p>需要注意的是，border-radius不仅可以使用像素值，还可以使用百分比值。</p>
+</blockquote>
+
+<p>这种简写方式除了一次性设置四个值外，还有其他的写法，比如设置一个值、两个值、三个值，设置不同的值有不同的效果，下面一一演示：</p>
+
+<h3 id="toc_2">1.2 设置一个值</h3>
+
+<p>当设置一个值时，四个角半径相等。</p>
+
+<pre><code>div {
+  border-radius: 10px;
+}
+</code></pre>
+
+<h3 id="toc_3">1.3 设置两个值</h3>
+
+<p>两个值分别对应：</p>
+
+<ul>
+<li>第一个值对应：<code>top-left</code> 与 <code>bottom-right</code></li>
+<li><p>第二个值对应：<code>top-right</code>与<code>bottom-left</code></p>
+
+<pre><code>div {
+    border-radius: 10px 5px;
+}
+</code></pre></li>
+</ul>
+
+<h3 id="toc_4">1.4 设置三个值</h3>
+
+<p>三个值分别对应：</p>
+
+<ul>
+<li>第一个值对应：<code>top-left</code></li>
+<li>第二个值对应：<code>top-right</code>与<code>bottom-left</code></li>
+<li><p>第三个值对应：<code>bottom-right</code></p>
+
+<pre><code>div {
+  border-radius: 30px 20px 10px;
+}
+</code></pre></li>
+</ul>
+
+<h2 id="toc_5">2、单独定义每个角的radius</h2>
+
+<p>单独定义是需要补充上角落信息：</p>
+
+<pre><code>div {
+  border-radius: 10px 5px 10px 5px;
+}
+// 和下面的效果相同
+div {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 5px;
+}
+</code></pre>
+
+<p>比如：</p>
+
+<pre><code>div {
+  border-radius: 10px;
+}
+// 和下面的效果相同
+div {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+</code></pre>
+
+<h2 id="toc_6">3、水平/垂直方向半径</h2>
+
+<h3 id="toc_7">3.1 椭圆模型</h3>
+
+<p>除了可以这样书写意外，每个角的半径还有水平半径与垂直半径之分。如下图：</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/corner_meitu_1.jpg" alt="radius"/></p>
+
+<p>如图所示，圆角属性的模型是一个椭圆，如果该椭圆的水平半径和垂直半径相同，则显示的效果便是圆角，或者我们给每个角只设置一个属性，也会显示圆角效果。</p>
+
+<p>我们可以设置该椭圆模型的水平半径和垂直半径，从而显示效果更丰富的圆角效果。</p>
+
+<pre><code>div {
+  border-radius: 10px / 5px;
+}
+</code></pre>
+
+<p>上面的代码设置了<code>div</code>的圆角属性，四个角的属性都是<code>水平半径</code>10像素，<code>垂直半径</code>5像素。</p>
+
+<h3 id="toc_8">3.2 水平/垂直方向半径的简写</h3>
+
+<pre><code>div {
+  border-radius: 10px 30px 40px / 4px 8px;
+}
+</code></pre>
+
+<p>上面的情形拆后的效果为：</p>
+
+<pre><code>div {
+  border-top-left-radius: 10px 4px;
+  border-top-right-radius: 30px 8px;
+  border-bottom-left-radius: 30px 4px;
+  border-bottom-right-radius: 40px 8px;
+}
+</code></pre>
+
+<blockquote>
+<p>这里需要注意，当单独写样式的时候，水平半径与垂直半径通过空格来分开，如果是简写的样式的时候，水平半径和垂直半径通过 “/” 来分开！</p>
+</blockquote>
+
+<h2 id="toc_9">4、半径的形状</h2>
+
+<pre><code>div {
+  width: 100px;
+  height: 100px;
+  border-width: 40px;
+  border-radius: 20px;
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160406071555896.png" alt=""/></p>
+
+<p>如果当<code>border-radius</code> 小于 <code>border-width</code>时，显示直角</p>
+
+<pre><code>div {
+  width: 100px;
+  height: 100px;
+  border-width: 40px;
+  border-radius: 50px;
+}
+</code></pre>
+
+<p>如果当<code>border-radius</code> 大于 <code>border-width</code>时，显示圆角</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160406071544588.png" alt=""/></p>
+
+<blockquote>
+<p>border-radius 内边半径 = 外边半径 - 边框宽度</p>
+
+<p>border-radius 与 border-width 差值越大，在圆角幅度越大。</p>
+</blockquote>
+
+<h2 id="toc_10">5、宽度与颜色过渡</h2>
+
+<h3 id="toc_11">5.1 宽度过渡</h3>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407124404880.png" alt=""/></p>
+
+<pre><code>.radius .girl {
+    width: 100px;
+    height: 100px;
+    border-width: 30px 10px 1px 1px;
+    border-radius: 80px;
+    border-top-left-radius: 50px;
+}
+</code></pre>
+
+<p>如上图所示，是由<code>border-radius</code>绘制的一幅卡通头像，元素的相邻边有不同的宽度，这个角会从宽的边过渡到窄的一边，其中一条边的宽度也可以是0，元素相邻转角是由大道小。</p>
+
+<h3 id="toc_12">5.2 颜色过渡</h3>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/1313134.png" alt=""/></p>
+
+<pre><code>  .radius .color {
+    height: 100px;
+    border-width: 30px 40px 50px 60px;
+    border-radius: 40px 50px 60px 70px;
+    border-color: red green blue orange;
+    margin-bottom: 100px;
+  }
+</code></pre>
+
+<p>颜色过渡包括颜色和样式的过渡，过渡的转折线为：连接内外曲线上两个角的连线。</p>
+
+<h2 id="toc_13">6、表格圆角</h2>
+
+<p>目前为止，当<code>table</code>的属性：<code>border-co&#39;collapse</code>为<code>collapse</code>的时候，表格无法呈现圆角。</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407010039670.png" alt=""/></p>
+
+<h2 id="toc_14">7、兼容性</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/4253434.png" alt=""/></p>
+
+<h2 id="toc_15">6、Demo</h2>
+
+<p><a href="http://sandbox.runjs.cn/show/emod5wvr">Demo 滑块与小女孩</a></p>
+
+<iframe style="width: 100%; height: 600px" src="http://sandbox.runjs.cn/show/rmy7ej7i" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14269481407962.html">业务学习：home 首页学习</a></h1>
+			<p class="meta"><time datetime="2015-03-21T22:29:00+08:00" 
+			pubdate data-updated="true">2015/3/21</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<p>以下是经过学习home模块后的思考：</p>
+
+<h2 id="toc_0">1、页面组件化</h2>
+
+<p>页面组件化是基础，其他的方案都建立在页面组件化之上。</p>
+
+<p>在这里所谓的页面组件化包括页面组件化以及数据的组件化，以首页为例，可以将数据保存为：</p>
+
+<pre><code>defaults: {
+    focus_list  : null, // 焦点轮播图
+    cat_list    : null, // 推荐分类
+    banner_list : null, // 公告列表
+    item_list   : null, // 单品推荐
+    block_list  : null  // 分组推荐
+}
+</code></pre>
+
+<p>然后，在View中，按数据的模块进行事件监听，并渲染相应的模块：</p>
+
+<pre><code>this.listenTo( this.model, &quot;change:focus_list&quot;,  this.renderFocus  );
+this.listenTo( this.model, &quot;change:cat_list&quot;,    this.renderCate   );
+this.listenTo( this.model, &quot;change:banner_list&quot;, this.renderBanner );
+this.listenTo( this.model, &quot;change:item_list&quot;,   this.renderItem   );
+this.listenTo( this.model, &quot;change:block_list&quot;,  this.renderGroup  );
+</code></pre>
+
+<p>其对应的页面模块分别为：</p>
+
+<pre><code>&lt;header class=&quot;header&quot;&gt; &lt;/header&gt;
+&lt;section class=&quot;slider&quot;&gt;&lt;/section&gt;
+&lt;section class=&quot;cates&quot;&gt;&lt;/section&gt;
+&lt;section class=&quot;banner&quot;&gt;&lt;/section&gt;
+&lt;section class=&quot;items&quot;&gt;&lt;/section&gt;
+&lt;section class=&quot;groups&quot;&gt;&lt;/section&gt;
+&lt;footer class=&quot;footer&quot;&gt; &lt;/footer&gt;
+</code></pre>
+
+<h2 id="toc_1">2、缓存静态模块</h2>
+
+<p>在将页面进行组件化后，接下来的事情便是讨论每一个组件可优化的点，首先从header和footer入手。因为在每一个页面中，header与footer基本是保持不变的，那么，这一部分就具有优化的可能，我能够想到的优化点是：缓存。如下是一个伪实践过程：</p>
+
+<pre><code>// 进入一个页面，先判断是否缓存了该页面的header
+if ( localStorage.getItem(&quot;header.home&quot;) ) {
+    // 如果已经缓存，则直接取出
+    var header = localStorage.getItem(&quot;header.home&quot;);
+    $(document.body).append( header );
+// 如果还没有缓存，则缓存起来    
+} else {
+    localStorage.setItem(&quot;header.home&quot;, $(&quot;header&quot;).toString())
+}
+</code></pre>
+
+<p>同样，footer也可以进行这样的缓存过程，这样缓存的优点在于，每次进入一个页面的时候，都会有新页面的header显示在页面中，不会存在空白的过程，即使断网了，页面也不会存在空白。</p>
+
+<blockquote>
+<p>这一点还需要在考虑，因为可能需要进行添加取出缓存的成本与页面渲染成本的对比。</p>
+</blockquote>
+
+<h2 id="toc_2">3、只更改变化的模块</h2>
+
+<p>该步骤还是在页面组件化之后进行的，第二个步骤是解决不变的模块如何进行优化，这一步是说常变化的模块优化方案。</p>
+
+<p>页面加载的过程，可以简单的概括为：Rending、Scriping，因为只有这两部分消耗的时间最长，大约占到页面加载总时间的88%左右（通过chrome的Timeline分析而来）。单页面应用中，Scriping占用更长的时间，因为所有的逻辑都在这一过程。</p>
+
+<p>可通过如下思路来思考优化的点：</p>
+
+<pre><code>1. 是否可以减少数据请求的次数
+2. 既然数据必要请求，那么如何减少页面重渲的成本
+3. 既然页面重渲，如何只渲染变化的组件
+4. 组件发生变化，如何进行的悄无声息
+</code></pre>
+
+<ul>
+<li>对于第一点：是否可以减少数据请求的次数</li>
+</ul>
+
+<p>就是说每次返回首页时这个请求有没有必要发出，或者说已经发出后，后端接受后，可不可以判断数据的修改情况，返回上次查询的副本，以此来减少数据库查询的情况，达到优化的目的。这种方式不知道可不可行，目前是一种猜测。</p>
+
+<ul>
+<li>对于第二点：如何减少重渲的成本</li>
+</ul>
+
+<p>既然需要发送请求，需要根据服务端的数据来渲染页面组件，那么就可以在这个过程中添加控制，在返回数据与渲染页面之间添加一层判断，即该数据是否和上次的数据相同，如果相同则什么也不做，如果不相同，则渲染页面组件，并保存该新的内容。鸣旭已经在做这方面的试验，并且切实可行。</p>
+
+<p>该部分按照组件来进行对比，分别保存每个组件的原内容，然后利用<code>toString()</code>方法进行转换后对比，伪过程为：</p>
+
+<pre><code>请求数据
+    数据toString()后是否和原来的相同？
+        相同
+            什么也不做
+        不相同
+            渲染页面，保存新内容
+</code></pre>
+
+<p>鸣旭是先用原来的数据渲染页面，然后请求数据判断和原来的是否相同，如果相同什么也不做，如果不相同，渲染该组件，这种方式就可以避免了页面空白的情况，当然如果内容有更新还是会出现空白，但相对固定的组件就快的多。</p>
+
+<p>这种方式还有一种好处就是说，如果后端出现连接问题，前端依然会显示内容，扮演了一部分缓存的功能。</p>
+
+<ul>
+<li>对于第三点：如何只渲染变化的组件</li>
+</ul>
+
+<p>上面有说到只渲染变化的组件已经可以实现，另外一个是我个人的猜测，就是也可以把每个item当成一个组件，该item变化则渲染该item，否则就是原来的数据。</p>
+
+<p>页面渲染更细粒化。</p>
+
+<p>我猜测可以通过<code>Backbone</code>的<code>Collection</code>来完成。即把每一个item当成一个model进行监听，该model的数据发生变化，则进行重新渲染。</p>
+
+<pre><code>// 单个item模型
+var Model = Backbone.Model.extend({
+    defaults: {
+
+    }
+});
+// 模型集合
+var Collection = Backbone.Collection.extend({
+    model: Model
+});
+// 组件视图
+var Model = Backbone.View.extend({
+    // 操作Collection
+});
+</code></pre>
+
+<p>以上只是自己的一个设想，这样的话，就可以利用Collection的listenTo来监听单个Item了。这种方式就是完全利用Backbone的优势，需要对Backbone较为熟悉。</p>
+
+<ul>
+<li>对于第四点：组件既然要渲染，那就如何悄无声息</li>
+</ul>
+
+<p>这算是走到了最后一步，页面渲染了原来的内容，当发现有内容变化时，会重新渲染该内容，因为ajax是发的基本是异步请求，所以一般而言都能够做到悄悄的进行。该部分没有想到更多内容。</p>
+
+<h2 id="toc_3">4、页面公共组件的缓存有效期</h2>
+
+<p>这是属于基本优化的一点，就是说，对于页面的公共组件，这些组件不会发生变化，就需要为这些组件添加缓存有效期。这样，在此访问该站点的时候，就不用去请求这些脚本。</p>
+
+<p>这一部分可以参考<a href="https://developers.google.com/speed/pagespeed/insights/?url=m.yougong.elianshang.com">Google的页面检测优化工具</a>，该工具对页面进行分析，总结出一份可以优化的点，主要内容在于：</p>
+
+<pre><code>1. 清除首屏内容中阻止呈现的Javascript和CSS
+2. 使用浏览器缓存
+3. 优化图片（已优化）
+4. 压缩CSS（已压缩）
+5. 压缩HTML（已压缩）
+6. 压缩Javascript（已压缩）
+7. 启用压缩（已启用）
+8. 缩短服务器响应时间（响应迅速）
+9. 避免使用着陆页重定向（没有重定向）
+</code></pre>
+
+<p>从以上内容上可以看出，使用浏览器缓存这一优化还没有进行，可以通过配置<code>Expires</code>头与<code>ETag</code>来完成。</p>
+
+<p>但是这种解决方案会产生一些<a href="http://www.infoq.com/cn/articles/front-end-engineering-and-performance-optimization-part1/">问题</a>，即上线时，文件覆盖出现时差，导致新页面配旧资源的情况，这种情况比较少，更新缓存时在发布时更改时间戳即可（FIS自动完成）。</p>
+
+<h2 id="toc_4">5、ui-item-list-view中，document事件重复绑定</h2>
+
+<p>主要是在ui-item-list-view中，appendTo方法调用了bindEvent()方法，而在bindEvent()方法中对document进行了事件绑定，那么循环appendTo的时候，就会导致document对于某一事件的循环绑定，出现意想不到的bug。</p>
+
+<p>一种方式就是分开调用ui-item-list-view的组件接口，应该可以解决上述问题，比如：</p>
+
+<pre><code>var uiItemList = new UIItemListView(), i = 0, html = &quot;&quot;;
+var $container = $( &quot;.container&quot; );
+$.each( newData, function ( k, v ) {
+    html += uiItemList.init({ 
+        itemList: v.itemList 
+    }).renderString();
+}
+$container.append( html );
+uiItemList.bindEvent( $container );
+</code></pre>
+
+<p>还有一个问题，document上的事件循环绑定也可能不是在这个循环上进行的，即在同一个页面中可能存在多个appendTo的情况，这也会导致循环绑定，而且，该绑定的事件不清除的话，其他页面的appendTo也会继续循环绑定，所以，需要一种方式来取消document上的事件。</p>
+
+<h2 id="toc_5">6、其他整理</h2>
+
+<h3 id="toc_6">1. 清除事件绑定</h3>
+
+<p>因为单页面应用并没有关闭页面的说法，所以如果不清除绑定的事件以及数据会导致事件与数据会越积越多，导致内存泄露，所以，单页面应用的垃圾回收变的很重要。</p>
+
+<p>一般的做法是，在切换app的时候，触发一个<code>close</code>事件，该事件负责清除页面上绑定的事件和数据。在优供中，这个方式是<code>clean</code>。</p>
+
+<p>在<code>Backbone</code>中提供了几个解除事件的方法：</p>
+
+<ul>
+<li>off()：<code>off()</code>可以解除某个对象的事件，包括自定义事件</li>
+<li>stopListening()：<code>stopListening()</code>清除listenTo添加的事件</li>
+<li>undelegateEvents()：<code>undelegateEvents()</code>清除视图中委托的事件</li>
+<li>remove()：<code>remove()</code>方法会移除DOM，同时执行stopListening</li>
+</ul>
+
+<p>一般remove()和off一起使用，来清空DOM与上面的事件：</p>
+
+<pre><code>view.remove().off();
+</code></pre>
+
+<p>在<a href="http://stackoverflow.com/questions/33264923/how-to-properly-destroy-view-on-backbone">stackoverflow</a>上也有讨论如何清除view的内容，大致的解决方案如下：</p>
+
+<pre><code>destroy_view: function() {
+
+    // COMPLETELY UNBIND THE VIEW
+    this.undelegateEvents();
+
+    this.$el.removeData().unbind(); 
+
+    // Remove view from DOM
+    this.remove();  
+    Backbone.View.prototype.remove.call(this);
+}
+</code></pre>
+
+<p>上述也进行了数据的清除，在jquery中提供了removeData()来移除数据，可以参考jquery的实现方式来完成。</p>
+
+<h3 id="toc_7">2. 解决引用类型带来的问题</h3>
+
+<p>当引用类型进行复制的时候，复制后的变量会指向原变量的内存地址。导致修改复制后的变量的时候，原变量也会修改。这种问题一般很难发现。</p>
+
+<pre><code>var oldObj = {
+    name: &quot;yangyoucun&quot;,
+    age: 25
+};
+var newObj = oldObj;
+newObj.name = &quot;Gavin&quot;;
+console.log( newObj.name );
+// Gavin
+</code></pre>
+
+<p>可使用如下方式来为复制后的变量单独开辟一个内存空间：</p>
+
+<pre><code>var oldObj = {
+    name: &quot;yangyoucun&quot;,
+    age: 25
+};
+var newObj = JSON.parse( JSON.stringify( oldObj ) );
+</code></pre>
+
+<p>另外，还有其他方式，比较繁琐的方式便是循环赋值：</p>
+
+<pre><code>var oldObj = {
+    name: &quot;yangyoucun&quot;,
+    age: 25
+};
+var newObj = {};
+for( key in oldObj ) {
+    if( oldObj.hasOwnProperty( key ) ) {
+        newObj[ key ] = oldObj[ key ];
+    }
+}
+</code></pre>
+
+<p>在jquery中也可以用<code>$.extend()</code>来进行深度复制，解决方式就是第一个参数赋值为：<code>true</code>：</p>
+
+<pre><code>var oldObj = {
+    name: &quot;yangyoucun&quot;,
+    age: 25
+};
+var newObj = $.extend(true, {}, oldObj);
+</code></pre>
+
+<h3 id="toc_8">3. 获取数字的大写形式</h3>
+
+<pre><code>// 不进行分组
+function transNumber( num ){
+    return num.toLocaleString( &#39;zh-Hans-CN-u-nu-hanidec&#39;, {
+        useGrouping: false
+    })
+}
+
+transNumber(1) // &quot;一&quot;
+transNumber(11) // &quot;一一&quot;
+transNumber(123456) // &quot;一二三四五六&quot;
+
+// 进行分组
+function transNumber( num ){
+    return num.toLocaleString( &#39;zh-Hans-CN-u-nu-hanidec&#39;, {
+        useGrouping: true
+    })
+}
+transNumber(123456) //&quot;一二三,四五六&quot;
+</code></pre>
+
+<h3 id="toc_9">4. 外部方法与内部方法</h3>
+
+<p>在代码中，内部方法通常在开头加上下划线，如：</p>
+
+<pre><code>var Func = function () {
+    var _getList = function () {
+        return &quot;aa&quot;;
+    }
+    this.get = function () {
+        var a = _getList();
+        return a;
+    }
+}
+</code></pre>
+
+<p>其中的<code>_getList</code>是内部私有方法，外部不能调用，而get方法是实例化方法，经实例化后即可调用。</p>
+
+
+		</div>
+
+		
+
+	</article>
+  
+	<div class="pagination">
+	
+<a href="archives.html">Blog Archives</a>
+	 <a class="next" href="all_1.html">Newer &rarr;</a>  
+	    
+	</div>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>

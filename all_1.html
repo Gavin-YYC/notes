@@ -1,0 +1,1282 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div class="blog-index">
+
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105630086.html">jQuery：Deferred and Promise</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:03+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<blockquote>
+<p>简介</p>
+
+<p>延迟对象是jQury中很重要的一部分，包括Ajax、动画还有其他一些异步操作基本都用延迟对象进行了改写。延迟对象可以让你不关心耗时任务什么时候结束，你只需指定该任务结束后执行什么样的回调即可，在等待的过程中，其他业务逻辑代码依然可以继续运行。</p>
+</blockquote>
+
+<h2 id="toc_0">一、jQuery.Deferred( [beforeStar] );</h2>
+
+<p>该方法创建一个延迟对象，并可以传入一个可选的函数，该函数会在返回延迟对象前被调用。创建完成后，会返回一个延迟对象实例，该实例上有该延迟对象的一些方法，这些方法可以进行链式调用。例如：</p>
+
+<pre><code>// 创建一个延迟对象
+var d = $.Deferred( function () {
+  alert( &quot;beforeStar&quot; );
+});
+// 任务结束后的调用
+d.done( function(){
+  alert(&quot; 任务成功完成！&quot;);
+});
+// 模拟耗时任务
+setTimeout( function(){
+  d.resolve();
+}, 3000);
+</code></pre>
+
+<h1 id="toc_1">二、回调队列</h1>
+
+<p>延迟对象提供将回调添加入回调队列的方法，该方法是通过jquery的回调对象来完成的，即jQuery.Callbacks()的add()方法；同时，还有调用回调函数的方法，类似fire()方法。不过其底层还是通过回调队列进行管理。</p>
+
+<pre><code>var d = $.Deferred();
+var fn1 = function () { alert( &quot;fn1&quot; ) };
+var fn1 = function () { alert( &quot;fn1&quot; ) };
+var fn1 = function () { alert( &quot;fn1&quot; ) };
+// 类似 callbacks.add()，添加三个回调
+d.done( fn1 ).fail( fn2 ).progress( fn3 );
+//模拟耗时任务
+setTimeot( function(){
+    // 类似callbacks.fire()，执行回调队列中的回调
+    d.reject();
+}, 3000);
+</code></pre>
+
+<p>以上，可以将延迟方法按照回调的add()、fire()进行划分，可以更方便的理解回调。</p>
+
+<blockquote>
+<p>done() | fail() | progress() | then() | always() 类似于callbacks.add()方法<br/>
+reject() | resolve() | notify() rejectWith() | resolveWith() | notifyWith() 类似于fire()方法</p>
+</blockquote>
+
+<h1 id="toc_2">三、常用方法</h1>
+
+<h3 id="toc_3">3.1 resolve()  |  done()</h3>
+
+<p>将回调状态更改为<code>resolve</code>，并将自动触发所有的<code>done</code>回调函数，并可以传入相应参数。这里的<code>done</code>回调函数可以是done()方法中的，也可以是then()方法中的。如下例子：</p>
+
+<pre><code>var d = $.Deferred();
+d.done( function ( args ) {
+    alert( args );
+});
+setTimeout(function(){
+    d.resolve( &quot;完成啦，快现身！&quot; );
+}, 3000)
+</code></pre>
+
+<p>另外一种是resolveWith( context [  , args ] )，该方法不仅可以传入参数自动触发<code>完成回调函数</code>还能指定回调函数的context（上下文），即可以改变回调函数中的<code>this</code>指向，比如：</p>
+
+<pre><code>var d = $.Deferred();
+d.done( function ( args ) {
+    console.log( this ); // Object，即Deferred对象
+    alert( args );   // 同时可以接受参数
+});
+setTimeout(function(){
+    d.resolveWith( d, &quot;又完成啦，现身吧！&quot;);
+}, 3000);
+</code></pre>
+
+<h3 id="toc_4">3.2 reject()  |  fail()</h3>
+
+<p>和resolve()使用方法完全相同，只是resolve是解决，reject是拒绝。</p>
+
+<p>将回调状态更改为<code>reject</code>，并将自动触发所有的<code>fail</code>回调函数，并可以传入相应参数。这里的<code>fail</code>回调函数可以是fail()方法中的，也可以是then()方法中的。如下例子：</p>
+
+<pre><code>var d = $.Deferred();
+d.fail( function ( args ) {
+    alert( args );
+});
+setTimeout(function(){
+    d.reject( &quot;被拒了！&quot; );
+}, 3000)
+</code></pre>
+
+<p>同样，与resolveWith()相对应的是rejectWith()方法，该方法同样可以传入context与args，使用方式和resolveWith()相同，不做例子了。</p>
+
+<h3 id="toc_5">3.3 notify()  |  progress()</h3>
+
+<p>一个回调的状态可能是<code>resolve</code>与<code>reject</code>，还有一个状态是<code>pending</code>，即回调正在进行中，此时状态既没有完成也没有拒绝，处在中间的进度态。而<code>notify()</code>方法就是处理这个状态的调度。</p>
+
+<p>执行该方法后，会自动触发<code>progress()</code>回调，或者<code>then()</code>方法中的第三个参数。基本使用方式和上述两个相同：</p>
+
+<pre><code>var d = $.Deferred();
+d.progress( function ( args ) {
+    alert( args );
+});
+setTimeout(function(){
+    d.notify( &quot;进度中&quot; );
+}, 3000)
+</code></pre>
+
+<p>可以通过notify()方法来实现进度条或者上次提示等功能。比如，下面模仿一个进度条的实现：</p>
+
+<pre><code>var d = $.Deferred();
+// 此处只是模拟使用
+d.progress( function ( args ) {
+    $(&quot;.bar&quot;).css( &quot;width&quot;, now + &quot;%&quot; ).html(now + &quot;%&quot;);
+});
+
+/* 模仿回调 */
+var count = 1024;
+var now = 0;
+setInterval( function() {
+    now = parseInt( now +  Math.random() * 20 );
+    if ( now &lt; count ) {
+        d.notify( (now / count * 100).toFixed( 2 ) );
+    } else {
+        d.resolve( &quot;100&quot; );
+    }
+}, 100);
+</code></pre>
+
+<p>这里做了一个在线演示：<a href="http://sandbox.runjs.cn/show/4y1ut71w">进度条</a>。</p>
+
+<h3 id="toc_6">3.4 全能的then()</h3>
+
+<p>从对以上的用法总结上来看，<code>then()</code>基本在每一小结都出现了，看来这个<code>then()</code>确实很强大，其实其也并不是很强大，只是很全能，它能一下子把done()、fail()、progress()收入囊中，不必单独拿出来一个个的写，其语法有三种：</p>
+
+<ul>
+<li> deferred.then( doneCallback );</li>
+<li> deferred.then( doneCallback, failCallback );</li>
+<li> deferred.then( doneCallback, failCallback, progressCallback );</li>
+</ul>
+
+<p>其中的doneCallback、failCallback、progressCallback是指成功、失败、进度时的回调函数。</p>
+
+<p>比如：</p>
+
+<pre><code>function done(){ alert( &quot;success&quot; ) };
+function fail(){ alert( &quot;error&quot; ) };
+function progress(){ alert( &quot;progress&quot; ) };
+
+var d = $.Deferred();
+d.then( done, fail, progress );
+setTimeout(function(){
+    d.resolve( &quot;完成！&quot; );
+}, 3000)
+</code></pre>
+
+<p>这样，把三个回调都写到了一个<code>then()</code>中，这样回调是什么状态都会流通到<code>then()</code>中，然后在去执行相应的回调。</p>
+
+<h3 id="toc_7">3.5 多个回调</h3>
+
+<p>jquery的延迟对象的强大之后是，我可以给一个延迟对象添加多个回调！这些回调会一次被执行，比如：</p>
+
+<pre><code>// 直接罗列回调
+var d = $.Deferred();
+d.done( fn1, fn2 );
+setTimeout(function(){
+    d.resolve();
+}, 1000)
+
+// 或者才用数组的形式
+var d = $.Deferred();
+d.done( [ fn1, fn2, fn3 ] );
+setTimeout(function(){
+    d.resolve();
+}, 1000)
+
+// 也可以连着写多个done()
+var d = $.Deferred();
+d.done( fn1 ).done( fn2 ).done( fn3 );
+setTimeout(function(){
+    d.resolve();
+}, 1000)
+</code></pre>
+
+<p>这是用<code>done()</code>做了个实例，<code>fail()</code>、<code>progress()</code>、<code>then()</code>都可以这样连用。也可以混合连用，先<code>done().fail().done().progress().fail()</code>想怎么连就怎么连，充分利用链式调用满足自己。</p>
+
+<h3 id="toc_8">3.6 延迟对象的状态：state()</h3>
+
+<p>当我们创建完一个延迟对象后，有时候需要得到延迟对象的状态，并根据这个状态来执行相应的方法。<code>state()</code>方法可以返回这个状态。延迟对象的状态主要有：</p>
+
+<ul>
+<li> resolve   任务执行完成</li>
+<li> reject  任务执行失败</li>
+<li> pending    任务正在进行中</li>
+</ul>
+
+<p>使用如下：</p>
+
+<pre><code>var d = $.Deferred();
+console.log( d.state() ); // pending
+d.always( function () {
+    if ( d.state !== &#39;pending&#39; ) {
+        return &quot;sorry&quot;;
+    }
+    console.log( d.state() );
+});
+setTimeout( function() {
+    d.resolve();
+}, 3000);
+</code></pre>
+
+<h1 id="toc_9">四、deferred.promise()</h1>
+
+<p>现在我们可以很轻松的切换延迟对象的状态，并执行相应的回调，但是还有一点，如果我们创建的延迟对象是全局的，那么该延迟对象的状态就有可能被外部更改。具体可参考阮一峰的介绍博客：<a href="http://www.ruanyifeng.com/blog/2011/08/a_detailed_explanation_of_jquery_deferred_object.html">jQuery的deferred对象详解</a>，另外，也有一篇比较详细介绍promise的文章：<a href="http://blog.allenm.me/2012/01/jquery_deferred_promise_method/">jQuery deferred 对象的 promise 方法</a>。</p>
+
+<p>该方法返回延迟对象的一个<code>promise</code>对象。<code>promise</code>对象也有一些方法，和deferred对象的方法相似，只不过隐藏了deferred对象的更改状态的方法：比如<code>resolve()</code>，<code>reject()</code>，<code>notify()</code>，<code>resolveWith()</code>，<code>rejectWith()</code>，<code>notifyWith()</code>，这些方法需要我们手动触发才能切换回调的状态，而<code>promise</code>对象把这些都省去了，你只能通过<code>done()</code>、<code>fail()</code>、<code>then()</code>添加回调或者判断状态来添加回调。</p>
+
+<p>下面通过一些例子来说明promise的作用：</p>
+
+<h3 id="toc_10">4.1 全局的延迟对象被修改</h3>
+
+<pre><code>var d = $.Deferred();
+var wait = function() {
+    setTimeout( function() {
+        d.resolve();
+    }, 1000);
+    return d.promise();
+}
+d.reject();
+// 此时不会有任何的弹出提示
+$.when( wait() ).done( function() {
+    alert(&quot;延迟对象状态被外部修改了！&quot;);
+});
+</code></pre>
+
+<p>或者这样：</p>
+
+<pre><code>var d = $.Deferred();
+var wait = function( d ) {
+    setTimeout( function() {
+        d.resolve();
+    }, 1000);
+    return d.promise();
+}
+// 此时会立即弹出提示“a”
+$.when( wait() ).done( function(){
+    alert(&quot;a&quot;);
+});
+d.resolve();
+</code></pre>
+
+<p>上面的两种情况相同，即如果延迟对象是全局的，在调用任务前状态已经改为reject了，所以不会提示内容，第二种情况是，$.when()去执行异步回调，回调会在1s后执行，那么程序继续往下执行代码，状态被改为resolve，所以弹出立马弹出。</p>
+
+<h3 id="toc_11">4.2 安全保护延迟不被修改</h3>
+
+<p>安全保护延迟对象不被修改，一个解决方法便是不设全局的延迟对象，只在任务中声明：然后返回该延迟对象的<code>promise</code>对象，因为promise对象是不具有操作状态的方法的，所以这样外部就无法修改延迟对象的状态了。</p>
+
+<p>例如：</p>
+
+<pre><code>// 创建一个全局的延迟对象
+var d = $.Deferred();
+var wait = function( d ) {
+    // 创建一个局部的延迟对象
+    var d = $.Deferred();
+    setTimeout( function() {
+        d.resolve();
+    }, 1000);
+    return d.promise();
+}
+// 全局延迟对象状态被修改
+d.resolve();
+// 不影响内部的延迟对象，依然是1s后弹出“a”
+$.when( wait() ).done( function(){
+    alert(&quot;a&quot;);
+});
+</code></pre>
+
+<h1 id="toc_12">五、jQuery.when();</h1>
+
+<p>jquery的延迟对象还有一个强大之处在于，你不仅可以给一个延迟对象添加无数个回调，你还可以同时使用多个延迟对象，并把结果给一个回调！利用<code>jQuery.when()</code>即可实现这种效果。</p>
+
+<h3 id="toc_13">5.1</h3>
+
+<p>在上面的例子中已经用到了<code>$.when()</code>方法，该方法不仅可以接受一个延迟对象或者延迟对象的<code>promise</code>对象，还可以接受多个延迟对象，并返回一个“宿主”延迟对象，<code>$.when()</code>会同时请求多个延迟对象，只有等到所有延迟对象都解决时，才执行done()方法，如果有一个延迟对象reject，则执行fail()方法。</p>
+
+<pre><code>$.when( $.ajax(), $.ajax() )
+    .done( function() {})
+    .fail( function() {});
+</code></pre>
+
+<h3 id="toc_14">5.2 传入参数</h3>
+
+<p>也可以将任意参数传递给<code>$.when()</code>，则会立即执行done()回调。</p>
+
+<pre><code>$.when( 123 )
+    .done( function (){
+        alert(&quot;a&quot;);
+    })
+    .fail( function (){
+        alert(&quot;b&quot;);
+    });
+</code></pre>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105630041.html">css3：word-wrap / overflow-wrap</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:03+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<h2 id="toc_0">1、简介</h2>
+
+<p>解决什么问题？</p>
+
+<p>在一个容器内，如果任意的一个字符串较长（比如URL）就会溢出该容器，<code>word-wrap</code>定义该容器内的字符串是否在溢出时自动换行。先看看效果：</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/63129846192649.png" alt=""/></p>
+
+<p>Demo地址：<a href="http://sandbox.runjs.cn/show/whzwpxw9">http://sandbox.runjs.cn/show/whzwpxw9</a></p>
+
+<blockquote>
+<p>注意：尽管所有浏览器都支持<code>word-wrap</code>，但是W3C决定将<code>word-wrap</code>更名为<code>overflow-wrap</code>，两者功能属性完全相同，只不过<code>overflow-wrap</code>的兼容性不如<code>word-wrap</code>的兼容性好。在使用的时候最好同时使用两个，可向前兼容。</p>
+</blockquote>
+
+<h2 id="toc_1">2、使用方法</h2>
+
+<blockquote>
+<p>注意：该属性是有在<code>white-space</code>允许换行的时候才可以使用。</p>
+</blockquote>
+
+<p>语法：</p>
+
+<pre><code>word-wrap: normal | break-word;
+</code></pre>
+
+<p>属性如下：</p>
+
+<ul>
+<li><code>normal</code>：文本只允许在特定的点（比如：空格、-等）处换行，默认属性。</li>
+<li><code>break-word</code>：如何说字符连续且没有特定分隔符会在任意的断开，否则的话，在可接受的端点处换行。</li>
+</ul>
+
+<p>兼容性语法：</p>
+
+<pre><code>.element {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+</code></pre>
+
+<blockquote>
+<p>同时书写两种形式，向前兼容。</p>
+</blockquote>
+
+<h2 id="toc_2">3、浏览器兼容性</h2>
+
+<p>word-wrap所有浏览器都兼容。overflow-wrap的兼容性如下：</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/1264319264.png" alt=""/></p>
+
+<h2 id="toc_3">4、参考文档</h2>
+
+<ul>
+<li><a href="https://drafts.csswg.org/css-text-3/#overflow-wrap-property">https://drafts.csswg.org/css-text-3/#overflow-wrap-property</a></li>
+<li><a href="http://css3clickchart.com/#overflow-wrap">Word Wrap / Overflow Wrap</a></li>
+<li><a href="https://docs.webplatform.org/wiki/css/properties/overflow-wrap">https://docs.webplatform.org/wiki/css/properties/overflow-wrap</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap">https://developer.mozilla.org/en-US/docs/Web/CSS/word-wrap</a></li>
+</ul>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105630003.html">css3：word-break</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:03+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<h2 id="toc_0">1、简介</h2>
+
+<p><code>word-break</code>属性可以解决断行的时候在哪断的问题。一般来说，断行只发生在具有空格、连字符的地方，该方式执行后就好像出现了一个空格和连字符。</p>
+
+<p>接下来的例子展示<code>word-break</code>的使用方式：</p>
+
+<pre><code>p {
+  width: 1em;
+  word-break: break-all;
+}
+</code></pre>
+
+<p>效果就是这样：</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/46329649283.png" alt=""/></p>
+
+<h2 id="toc_1">2、参数（value）</h2>
+
+<ul>
+<li><code>normal</code>： 默认规则进行断行</li>
+<li><code>break-all</code>： 任何文字单词都有可能断行</li>
+<li><code>keep-all</code>：对于中文、日文、韩文文本不会断行，其他情况下和<code>normal</code>效果相同。（测试效果是：一般不换行，除了碰到标点符号才会换行。该参数可能在不同浏览器上有不同情况）</li>
+</ul>
+
+<p>一般该属性经常和<code>hyphens</code>属性一起使用，当中断发生时，连字符自动插入：</p>
+
+<pre><code>p {
+  -ms-word-break: break-all;
+      word-break: break-all;
+
+   // Non standard for webkit
+      word-break: break-word;
+
+ -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+         hyphens: auto;
+}
+</code></pre>
+
+<h2 id="toc_2">3、兼容性</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/327409732074-023.png" alt=""/></p>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105629966.html">css3：web font</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<blockquote>
+<p>css3引入了@font-face模块，使用该模块可以为网页添加一些优雅的字体，也可以使用字体文件来添加网页小图标，web font的使用已经很广泛，并且浏览器兼容性也很好（所有的浏览器都支持），唯一不足的是需要把字体文件放到服务器上，用户浏览的时候需要下载字体文件，这可能会让用户多等待一点时间，但与优雅的页面比起来，也可以忽略了。不过，这依然需要考虑网页的风格以及面向人群。</p>
+</blockquote>
+
+<h2 id="toc_0">1、如何引入网页字体</h2>
+
+<blockquote>
+<p>在之前如果想引用好看的字体需要用图片替代或者利用flash来完成，现在完全可以用@font-face来替代，下面总结一下@font-face的基本语法。</p>
+</blockquote>
+
+<p>### 1.1 @font-face</p>
+
+<pre><code>  @font-face {
+    font-family: &#39;myFontName&#39;;
+    src: &lt;source&gt; [&lt;format&gt;];
+    [font-weight: &lt;weight&gt;];
+    [font-style: &lt;style&gt; ];
+  }
+</code></pre>
+
+<blockquote>
+<p>其中，<code>[]</code>表示可选内容。</p>
+</blockquote>
+
+<p>具体说明：</p>
+
+<ul>
+<li><code>font-family</code></li>
+<li><p><code>source</code></p>
+
+<h3 id="toc_1">1.2 字体兼容性</h3>
+
+<h3 id="toc_2">1.3 调用字体</h3></li>
+</ul>
+
+<h2 id="toc_3">2、如何制作网页字体</h2>
+
+<h2 id="toc_4">3、</h2>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105629937.html">css3：text-overflow</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<h2 id="toc_0">1、简介</h2>
+
+<p>css的<code>text-overflow</code>属性是用来解决当文本超出元素范围时该怎么截断的问题。</p>
+
+<h2 id="toc_1">2、使用方法</h2>
+
+<p>在之前的实现中，文本溢出一般是通过<code>overflow: hidden</code>来实现的，或者通过js来判断字符的长度，实现截取然后多余的补上<code>...</code>替代符号。现在直接通过css的一个属性就可完成此项工作，下面先看看<code>text-overflow</code>的语法。</p>
+
+<pre><code>element {
+  text-overflow: normal | clip | ellipsis | string;
+}
+</code></pre>
+
+<p>下面解释一下参数：</p>
+
+<ul>
+<li><code>normal</code>：正常情况下，效果和clip相同</li>
+<li><code>clip</code>： 如果超出box，则内容直接截断，不会显示<code>...</code>标记</li>
+<li><code>ellipsis</code>：文本溢出时显示<code>...</code>标记，在最后一个字符中插入</li>
+<li><code>string</code>：用户可自定义的分隔符，比如<code>... more</code></li>
+</ul>
+
+<blockquote>
+<p>注意：经测试，只有firefox浏览器支持string属性，可以自定义分隔符</p>
+</blockquote>
+
+<p>这里需要注意的是，<code>text-overflow</code>单独使用是没有任何效果的，需要配合其他css属性一起使用：</p>
+
+<pre><code>element {
+  text-overflow: ellipsis;
+  // 需要配合如何属性一起使用
+  white-space: nowrap;
+  overflow: hidden;
+}
+</code></pre>
+
+<blockquote>
+<p>text-overflow 只发生在block与inline-block元素中，因为这些元素需要宽度来防止内容过多时溢出。当设置direction属性为：rtl，此时不会出现左边没有出现...的标记符。</p>
+</blockquote>
+
+<h2 id="toc_2">3、测试例子</h2>
+
+<p><a href="http://htmlpreview.github.io/?https://github.com/Gavin-YYC/html5demos/blob/master/css3-text-overflow.html">点击进入在线Demo</a></p>
+
+<h2 id="toc_3">4、如何实现多行文本的溢出处理</h2>
+
+<p>上面通过<code>white-space: nowrap</code>设置后会产生一个问题，即文本不会换行，而现实中经常会碰到的需求是：我们有多行文本，如果溢出则进行分割，这种情况下怎么办呢？</p>
+
+<ul>
+<li><p>方案1：<code>-webkit-line-clamp：line-number</code>，webkit内核支持，其他浏览器不支持</p>
+
+<pre><code>.text-overflow-multy-line {
+  word-break: normal;
+  height: 120px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  // 最后三个属性必须支持
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+</code></pre></li>
+<li><p>方法2：<code>text-overflow: -o-ellipsis-lastline;</code>，只有Opera浏览器支持</p>
+
+<pre><code>p {
+    overflow: hidden;
+    white-space: normal;
+    height: 3em;
+    text-overflow: -o-ellipsis-lastline;
+}
+</code></pre></li>
+<li><p>方法3：jquery</p>
+
+<pre><code>$(&quot;.figcaption&quot;).each(function(i){
+  var divH = $(this).height();
+  var $p = $(&quot;p&quot;, $(this)).eq(0);
+  while ($p.outerHeight() &gt; divH) {
+      $p.text($p.text().replace(/(\s)*([a-zA-Z0-9]+|\W)(\.\.\.)?$/, &quot;...&quot;));
+  };
+});
+</code></pre></li>
+<li><p>方法4：::after</p>
+
+<pre><code>p::after {
+  content:&quot;...&quot;;
+  font-weight:bold;
+  position:absolute;
+  bottom:0;
+  right:0;
+  padding:0 20px 1px 45px;
+}
+</code></pre></li>
+<li><p>方案5： 插件方法，<a href="https://github.com/josephschmitt/Clamp.js">Clamp.js</a></p></li>
+</ul>
+
+<h2 id="toc_4">5、老版本的text-overflow</h2>
+
+<p>老版本的<code>text-overflow</code>还有其他属性，比如：<code>text-overflow: ellipsis ellipsis;</code>，其有两个参数，分别控制着容器内左右两边的溢出，这个时候需要设置<code>text-align:center</code>，这个属性已经废弃了。不知道如何实现这种效果的，难道是在容器中间取一个更小的容器？</p>
+
+<p>另外一个老版本的属性是：<code>ellipsis-word</code>，过去<code>text-overflow</code>是<code>text-overflow-mode</code>与<code>text-overflow-ellipsis</code>的缩写，现在那些单独的属性都不存在了。</p>
+
+<h2 id="toc_5">6、浏览器兼容性</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/362468298.png" alt=""/></p>
+
+<h2 id="toc_6">7、参考文档</h2>
+
+<ul>
+<li><p><a href="http://c7sky.com/text-overflow-ellipsis-on-multiline-text.html">多行文本溢出显示省略号(...)的方法</a></p></li>
+<li><p><a href="https://css-tricks.com/almanac/properties/t/text-overflow/">text-overflow</a></p></li>
+<li><p><a href="https://www.w3.org/wiki/Text-overflow_middle_cropping">Text-overflow middle cropping</a></p></li>
+<li><p><a href="http://www.css88.com/archives/5206">多行文本溢出显示省略号(…)全攻略</a></p></li>
+</ul>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105629885.html">css3：伪元素</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<blockquote>
+<p>为了与伪类区分，css3对伪元素进行了调整，在原来一个冒号的基础上增加了一个冒号。在IE6-8值只支持单冒号写法，现代浏览器支持两种写法。</p>
+</blockquote>
+
+<h2 id="toc_0">1、伪元素</h2>
+
+<p>  利用伪元素实现首字母下沉效果与首行效果：<a href="http://sandbox.runjs.cn/show/dcwznqvt">http://sandbox.runjs.cn/show/dcwznqvt <br/>
+</a></p>
+
+<ul>
+<li><p><code>::first-letter</code>选中元素中的首字母 </p></li>
+<li><p><code>::first-line</code>选中元素中的首行</p></li>
+<li><p><code>::selectoion</code>可以对用户选中的文本进行修饰，比如选中文本的<strong>颜色</strong>、<strong>背景色</strong>，<code>::selection</code>只支持该两个属性。</p></li>
+</ul>
+
+<p>  在属性选择器中容器混淆的是：<code>E[attr~=val]</code>与<code>E[attr*=val]</code></p>
+
+<p>两者都可以选择包含val的元素，不同之处在于，<code>[attr~=val]</code>是选中带有空格分开的具有多个属性的元素，<code>[attr*=val]</code>表示只要有val就可以选中，比如：</p>
+
+<pre><code>&lt;p class=&quot;header fixed&quot;&gt;这是一个段落。&lt;/p&gt;
+</code></pre>
+
+<p>则两个选择器都会选中，但是：</p>
+
+<pre><code>&lt;p class=&quot;headerfixed&quot;&gt;这是一个段落。&lt;/p&gt;
+</code></pre>
+
+<p>只有<code>[class*=header]</code>能够选中。  选择器<code>[attr|=val]</code>可选择带有“val-”的元素，比如：“col-”，常用于设置多语言版本：lang-zh </p>
+
+<ul>
+<li><code>^</code> 表示以什么开头</li>
+<li><code>$</code> 表示以什么结尾</li>
+<li><code>*</code> 表示匹配任意字符  伪元素</li>
+</ul>
+
+<h2 id="toc_1">2、::before 与 :: after</h2>
+
+<p><code>::before</code>与<code>::after</code>常用于<strong>清除浮动</strong>，<strong>设置字体</strong>，插入的元素不是DOM的一部分，但同样可以设置样式。要让该伪元素生效，需要设置content属性。  </p>
+
+<p>content属性的设置很灵活，可以这是计数器，对页面元素进行计数并显示。也可以获取当前元素的属性<code>attr()</code>并进行设置：</p>
+
+<p>如：<code>content: attr(class)</code>，表示插入了该元素的class值。  </p>
+
+<p>另外一个有用的是在多语言版本中的设置，因为每种语言可能对应不同的引号，所以可以用::before与::after设置不同语言的引号。</p>
+
+<pre><code>:lang( zh ) q {
+  quotes: ‘“’ ‘”’;
+}
+p::before {
+  content: open-quote;
+}
+p::after {
+  content: close-quote;
+}
+</code></pre>
+
+<h2 id="toc_2">3、web font</h2>
+
+<p>  另外，在自定义字体的时候也多用<code>content</code>来完成。这一部分会在以后学习css3的font的时候总结，这里记录一下：</p>
+
+<blockquote>
+<p>平时使用的字体是用的16进制的Unicode编码，在Unicode字符集中，E000至F8FF属于用户造字区，原本是空的，用户可以在里面定义字符的形状，我们所用的webfont就在这一区域。</p>
+</blockquote>
+
+<p>用户设定好字体文件后，可以直接在页面调用\f001类似的编码引用字体，但是这样开发者不知道该代码所指向的图标具体是什么，所以一般会定义一个class用content来引入该16进制编码:</p>
+
+<pre><code>.font_close::before { 
+  content: &#39;\f001&#39;
+}
+</code></pre>
+
+<p> 所以在使用的时候，只需要进行如下标记：</p>
+
+<pre><code>&lt;a class=&quot;font font_close&quot;&gt;&lt;/a&gt;
+</code></pre>
+
+<p>即可引入图标。</p>
+
+<h2 id="toc_3">4、css3选择器知识树</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/css3-selector.png" alt="css3-selector.png"/></p>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105629861.html">css3：linear-gradient</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<p>渐变分为：</p>
+
+<ul>
+<li>linear-gradient</li>
+<li>radial-gradient</li>
+<li>repeating-linear-gradient</li>
+<li>repeating-radial-gradient</li>
+</ul>
+
+<p>渐变可以用于任何设置图像的属性上面，比如：</p>
+
+<pre><code>background: linear-gradient( white, gray );
+list-style-image: line-gradoent( circle, #006, #0000af 100%, white 100%);
+</code></pre>
+
+<h2 id="toc_0">一、语法</h2>
+
+<p>-webkit-旧语法：</p>
+
+<pre><code>-webkit-gradient(&lt;type&gt;,&lt;point&gt;[,&lt;radius&gt;]?,&lt;point&gt;[,radius]?&lt;stop&gt;*)
+</code></pre>
+
+<p>-webkit-新语法：</p>
+
+<pre><code>-webkit-linear-gradient([&lt;point&gt;||&lt;angle&gt;]?&lt;stop&gt;,&lt;stop&gt;[,stop]*)
+</code></pre>
+
+<p>其他引擎的语法和-webkit-语法一致，只是前缀不同，只需带上相应的前缀即可：<code>-ms-</code>，<code>-o-</code>，<code>-moz-</code>。</p>
+
+<p>标准语法：</p>
+
+<pre><code>linear-gradient([[&lt;angle&gt; | to &lt;side-or-corner&gt;],]?&lt;color-stop&gt;[,&lt;color-stop&gt;]+);
+</code></pre>
+
+<h2 id="toc_1">二、使用方式</h2>
+
+<p>可以有如下方式设置渐变：</p>
+
+<pre><code>// 省略方向，默认从上到下
+background: linear-gradient( red, orange );
+// 方向是关键字，加上to
+background: linear-gradient( to top, red, orange );
+// 方向是角落（corner），加上to
+background: linear-gradient( to top left, red, orange );
+// 方向是角度，顺时针方向
+background: linear-gradient( 45deg, red, orange );
+// 角度也可以是负的
+background: linear-gradient( -45deg, red, orange );
+// 可以设置颜色的位置比例
+background: linear-gradient( to bottom, reg 0%, orange 100% );
+</code></pre>
+
+<p>其中，如果是角度的话，其规则如图所示：</p>
+
+<p><img src="http://img.youthol.top/css3/gradient-diagram.png" alt=""/></p>
+
+<p>以box的中点为原点做圆，顺时针计算角度值。白色在box的左下角，黑色集中在box的右上角，尽管途中的蓝色线条没有经过左下角与右上角。</p>
+
+<h2 id="toc_2">三、练习</h2>
+
+<iframe style="width: 100%; height: 1300px" src="http://img.youthol.top/css3/css3-linear-gradient-demo.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>打造立体渐变按钮：</p>
+
+<iframe style="width: 100%; height: 100px" src="http://img.youthol.top/css3-gradient-button.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+		</div>
+
+		
+
+	</article>
+ 
+	<article>
+		 <header>
+		  	<h1 class="entry-title"><a href="14631105629835.html">css3：box-shadow</a></h1>
+			<p class="meta"><time datetime="2016-05-13T11:36:02+08:00" 
+			pubdate data-updated="true">2016/5/13</time></p>
+		 </header>
+	  	<div class="entry-content">
+		  	
+		  	<h1 id="toc_0">一、基本语法</h1>
+
+<blockquote>
+<p>box-shadow可以给任何元素添加一组或几组投影效果。</p>
+</blockquote>
+
+<p>基本语法：</p>
+
+<pre><code>box-shadow: [inset] x-offset y-offset blur-radius spread-radius color;
+</code></pre>
+
+<p>其中，<code>box-shadow</code>默认值为<code>none</code>。</p>
+
+<h1 id="toc_1">二、参数介绍</h1>
+
+<ul>
+<li><p><code>inset</code>：如果设置<code>inset</code>关键字，则声明创建的是内阴影，如果不设置<code>inset</code>关键字，则声明的是外阴影，<strong>默认为外阴影</strong>。</p>
+
+<pre><code>// 内偏移，只需一个inset关键字即可
+.inset {
+  width: 100px;
+  height: 100px;
+  box-shadow: inset 20px 20px 0px 0px #ccc;
+}
+// 外偏移，不用任何关键字
+.out {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 20px 0px 0px #ccc;
+}
+</code></pre></li>
+</ul>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407081755180.png" alt=""/></p>
+
+<ul>
+<li><p><code>x-offset</code>，阴影在水平方向上的偏移，如果是正值，是向右偏移，如果是负值，向左偏移，如果是0，则不偏移。<code>x-offset</code>的值便是偏移的距离。</p>
+
+<pre><code>// 正偏移
+.positive {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 0px 0px 0px #ccc;
+}
+// 负偏移
+.nagative {
+  width: 100px;
+  height: 100px;
+  box-shadow: -20px 0px 0px 0px #ccc;
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407083502688.png" alt=""/></p></li>
+<li><p><code>y-offset</code>，阴影在垂直方向上的偏移，如果是正值，是向下偏移，如果是负值，向上偏移，如果是0，则不偏移。<code>y-offset</code>的值便是偏移的距离。</p>
+
+<pre><code>// 下偏移
+.positive {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0px 20px 0px 0px #ccc;
+}
+// 上偏移
+.nagative {
+  width: 100px;
+  height: 100px;
+  box-shadow: 0px -20px 0px 0px #ccc;
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407091415204.png" alt=""/></p></li>
+<li><p><code>blur-radius</code>: 阴影模糊半径，该值只能是正值。为0时，表示不模糊，此时如果有阴影的话，那么该阴影将会棱角分明。该值越大，就越模糊。</p>
+
+<pre><code>// 无模糊
+.positive {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 20px 0px 0px #ccc;
+}
+// 有模糊
+.nagative {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 20px 20px 0px #ccc;
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407092139995.png" alt=""/></p></li>
+<li><p><code>spread-radius</code>：阴影拓展半径，可以是正值，表示阴影会扩大多少像素，负值表示阴影会减少多少像素。</p>
+
+<pre><code>// 正拓展
+.positive {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 20px 0px 20px #ccc;
+}
+// 无拓展
+.nagative {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 20px 0px 0px #ccc;
+}
+// 负拓展
+.nagative {
+  width: 100px;
+  height: 100px;
+  box-shadow: 20px 20px 0px -20px #ccc;
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407094109334.png" alt=""/></p></li>
+<li><p><code>color</code>：阴影颜色，也可以不设置颜色，不设置颜色话取浏览器默认色。但在有些浏览器上不设置的话会为透明。</p></li>
+</ul>
+
+<h1 id="toc_2">三、阴影模型</h1>
+
+<h2 id="toc_3">3.1 模型图</h2>
+
+<p>下面这张图是w3给的一张效果图，在这张图上可以很清晰的知道各个参数对应的效果：</p>
+
+<pre><code>.demo {
+  width: 100px;
+  height: 100px;
+  border: 12px solid blue;
+  background-color: orange;
+  border-top-left-radius: 60px 90px;
+  border-bottom-right-radius: 60px 90px;
+  box-shadow:
+    64px 64px 12px 40px rgba(0,0,0,0.4),
+    12px 12px 0px 8px rgba(0,0,0,0.4) inset;
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/20160407095021383.png" alt=""/></p>
+
+<p>在图中，外阴影部分中的虚线区域是阴影最基本的区域，阴影至边缘部分是阴影拓展区域，阴影拓展区域之外是阴影模糊区域，可见阴影模糊半径是占外界空间与拓展阴影空间的各二分之一。</p>
+
+<p>另外，阴影的形状继承元素圆角的形状。</p>
+
+<h2 id="toc_4">3.2 基本阴影</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/jbbkjb.png" alt="ss"/></p>
+
+<h1 id="toc_5">四、效果示例</h1>
+
+<h2 id="toc_6">4.1 单边阴影</h2>
+
+<p>可以通过简单的阴影偏移即可完成单边阴影效果。</p>
+
+<pre><code>// 上边阴影
+div {
+    width: 200px;
+    height: 300px;
+    border: 1px solid #ccc;
+    box-shadow: 0px -5px; 0px 0px rgba(0,0,0,.5);
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/dadasfg.png" alt=""/></p>
+
+<p>另外，如果我们不仅只是设置了偏移，另外设置了阴影的话会是什么效果，可以看下截图：</p>
+
+<pre><code>// 上边阴影
+div {
+    width: 200px;
+    height: 300px;
+    border: 1px solid #ccc;
+    box-shadow: 0px -5px; 5px 0px rgba(0,0,0,.5);
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/32457862984.png" alt=""/></p>
+
+<p>可以看到，尽管我们只是设置了某一方向上的阴影，但是当设置模糊半径的时候，其他边也会有一些阴影效果。</p>
+
+<p>上面提到过，模糊半径是为10px时，各站外界区域和阴影区域5px，那么可以设置负的拓展，来把外面模糊的5像素抵消：</p>
+
+<pre><code>// 上边阴影
+div {
+    width: 200px;
+    height: 300px;
+    border: 1px solid #ccc;
+    box-shadow: 0px -10px; 5px -5px rgba(0,0,0,.5);
+}
+</code></pre>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/462729831.png" alt=""/></p>
+
+<h2 id="toc_7">4.2 四边相同的阴影</h2>
+
+<p>要想获取四边的阴影相同，有两种方法，第一，不设置偏移，只设置模糊半径和拓展。</p>
+
+<pre><code>div {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.5);
+}
+</code></pre>
+
+<blockquote>
+<p>随着拓展半径的增大，其阴影会越来越深。</p>
+</blockquote>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/241423534657.png" alt=""/></p>
+
+<p>第二种方法就是设置扩展半径和阴影颜色，这样获取不到模糊效果：</p>
+
+<pre><code>div {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 3px rgba(0, 0, 0, 0.5);
+}
+</code></pre>
+
+<h2 id="toc_8">4.3 border-image与box-shadow</h2>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/6547756758.png" alt=""/></p>
+
+<p>由上图可见，<code>border-image</code>并不会影响<code>box-shadow</code>的外阴影。</p>
+
+<p>外阴影在最下面，不受任何影响，内阴影在border之下，background之上，背景图片在背景颜色之上。所以层级关系为：<code>边框 &gt; 内阴影 &gt; 背景图片 &gt; 背景颜色 &gt; 外阴影</code>。</p>
+
+<h2 id="toc_9">4.4 box-shadow与页面布局</h2>
+
+<p>另外一个问题是，<code>box-shadow</code>的阴影是否会影响页面布局，是否会在页面占据空间？下面实例演示看看效果：</p>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/6239857923750.png" alt=""/></p>
+
+<p>可见，阴影并不占据页面的任何内容，也不会影响页面布局。所以可以尽情使用，只不过需要调整好层级关系。</p>
+
+<h1 id="toc_10">五、浏览器兼容性</h1>
+
+<p><img src="http://7mj4a6.com1.z0.glb.clouddn.com/dqwdqf.png" alt=""/></p>
+
+<h1 id="toc_11">六、参考链接</h1>
+
+<ul>
+<li><a href="https://www.w3.org/TR/css3-background/#box-shadow">https://www.w3.org/TR/css3-background/#box-shadow</a></li>
+<li><a href="http://www.w3cplus.com/content/css3-box-shadow">http://www.w3cplus.com/content/css3-box-shadow</a></li>
+<li><a href="http://nicolasgallagher.com/css-drop-shadows-without-images/demo/">更多Drop shadow效果</a></li>
+</ul>
+
+
+		</div>
+
+		
+
+	</article>
+  
+	<div class="pagination">
+	 <a class="prev" href="all_2.html">&larr; Older</a> 
+<a href="archives.html">Blog Archives</a>
+	 <a class="next" href="all.html">Newer &rarr;</a>  
+	    
+	</div>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>

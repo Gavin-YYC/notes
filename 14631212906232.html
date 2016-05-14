@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>
+  
+  JavaScript：被忽视的细节 - 我的笔记整理
+  
+
+  </title>
+  <meta name="author" content="">
+  <meta name="description" content="学习笔记归纳整理">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="asset/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="atom.xml" rel="alternate" title="我的笔记整理" type="application/atom+xml">
+  <script src="asset/js/modernizr-2.0.js"></script>
+  <script src="asset/js/jquery.min.js"></script>
+  <script src="asset/highlightjs/highlight.pack.js"></script>
+  <link href="asset/highlightjs/styles/solarized_light.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <style type="text/css">
+  .cat-children-p{ padding: 6px 0px;}
+  .hljs{background: none;}
+  </style>
+  <script type="text/javascript">
+  var isAddSildbar = true;
+  </script>
+  <script src="asset/js/octopress.js" type="text/javascript"></script>
+</head>
+<script type="text/javascript">
+//链接新开窗口
+function addBlankTargetForLinks () {
+  $('a[href^="http"]').each(function(){
+      $(this).attr('target', '_blank');
+  });
+}
+$(document).ready(function(event) {
+  addBlankTargetForLinks();
+});
+</script>
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="index.html">我的笔记整理</a></h1>
+
+    <h2>学习笔记归纳整理</h2>
+
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+
+</ul>
+
+<form action="http://baidu.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+
+<ul class="main-navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a href="archives.html">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+ 
+<div>
+	<article class="hentry" role="article">
+	<header>
+			  	<h1 class="entry-title">JavaScript：被忽视的细节</h1>
+				<p class="meta"><time datetime="2016-05-13T14:34:50+08:00" pubdate data-updated="true">2016/5/13</time></p>
+			 </header>
+		  	<div class="entry-content">
+			  	<p>《JavaScript 权威指南》这本书从第四版开始，一直到第六版，每个版本我都逐字逐句读过几遍，然而每一遍下来的感受却完全不一样。上上周的周一，再次翻开了这本犀牛书，这一次我是带着批判精神和研究精神过来的，所以看的时候也写下了一些感受和笔记，都是些容易被忽略的点，部分内容犀牛书上不一定有提到。 <br/>
+之前都发在微博上，稍微整理了一番，放在这里，方便阅读。 </p>
+
+<h2 id="toc_0">语句/表达式 </h2>
+
+<p>换个角度理解语句（statemaents）和表达式（expressions）：表达式不会改变程序的运行状态，而语句会。还有一种叫做表达式语句，可以理解为表达式和语句的交集，如 <code>({a:1})</code>、<code>&quot;use strict;&quot;</code>等，我觉得没必要死扣，意义不大。</p>
+
+<h2 id="toc_1">字符集</h2>
+
+<p>ES3 要求 JS 必须实现 <code>Unicode 2.1</code> 及后续版本，而 ES5 只要求支持 <code>Unicode 3</code> 及后续版本。Unicode 字符 2005 年超过了十万字符，至今仍在不断增修，最新版本是 8.0。 </p>
+
+<h2 id="toc_2">分号</h2>
+
+<p> <br/>
+如果你写 JS 代码不喜欢带分号，而又搞不清什么时候必须加分号，可以这么做：在以 <code>“(“</code>、<code>”[“</code> 、<code>”/“</code>、<code>”+”</code>、<code>”-“</code>开头的语句前面都加上一个分号，如 </p>
+
+<pre><code>;(a + b).toString()。 
+</code></pre>
+
+<h2 id="toc_3">进制 </h2>
+
+<p>ES5 严格模式中禁止使用八进制。目前各种引擎对 JS 的实现是存在差异的，部分支持八进制，部分不支持。八进制被禁止的原因：<code>String</code>和<code>Number</code>之间经常被相互转换，而以<code>0</code>开头的八进制数据特别容易让人迷惑，也容易让机器迷惑，比如<code>09</code>是该被转换成<code>9</code>还是直接报错？十六进制不存在这个问题，如 <code>0x98</code>。更多信息参阅 这里。</p>
+
+<h2 id="toc_4">精度 </h2>
+
+<p>JS 采用 <code>IEEE-754</code> 浮点数表示法，这是一种二进制表示法，由于精度原因 JS 不能表示所有的实数。它能展示的浮点数个数是有限的，比如它不能准确地表示三分之一的数值字面量。这也导致了它在浮点数的计算上存在误差，如 </p>
+
+<pre><code>0.3 - 0.2 != 0.2 - 0.1
+</code></pre>
+
+<p>因为在计算的过程中，存在数据的溢出，丢失了精度。</p>
+
+<pre><code>0.3 - 0.2 // 0.09999999999999998
+0.2 - 0.1 // 0.1
+</code></pre>
+
+<h2 id="toc_5">null/undefined </h2>
+
+<p>系统级、出乎意料的或者类似错误的值的空缺使用 <code>undefined</code>，而程序级、正常的或意料之中的值的空缺使用 <code>null</code>。平时编程给变量赋值时，不要使用 <code>undefined</code> 而应该用 <code>null</code>。值得注意的是 ES3 中的 undefined 是可以被重新赋值的，ES5 修复了这个 bug。通常我们使用 <code>void 0</code> 来还原/代替 undefined 的值。</p>
+
+<h2 id="toc_6">eval </h2>
+
+<p><code>eval</code> 是个不好把握的东西，它在 ES3 中更像是 <code>Function</code>，而在 ES5 中更像是一个运算符（严格模式下不允许设置别名，否则报错，且将其作为保留字）。实际上 ES3 中也不允许给 eval 设置别名，然而很多实现却依然允许，并将其作为全局代码来执行，浏览器尤其是 IE 对它实现相当混乱，没有什么规律可循，不过 IE 中提供了一个 <code>execScript</code> 函数，类似全局的 <code>eval</code>，这个函数每次执行都会返回 <code>null</code>。</p>
+
+<p>需要使用 <code>eval</code> 的场景并不多，尽量少用，一般需求使用 <code>new Function</code> 就能满足。</p>
+
+<h2 id="toc_7">引用 </h2>
+
+<p>删除属性存在的坑：</p>
+
+<pre><code>a = {
+    n: {
+        x: 2
+    }
+}, 
+b = a.n; 
+delete a.n; 
+</code></pre>
+
+<p>这段代码执行之后，b.x 依然等于 2，原因是 {x:2} 这个对象被 a 和 b 同时引用，delete 指令只删除了 a 对它的引用，b 上的引用依然存在。这种问题有可能造成内存泄漏。</p>
+
+<h2 id="toc_8">Object 扩展 </h2>
+
+<p><code>Object</code> 的 <code>freeze</code> 方法过于严格；<code>defineGetter/lookupGetter</code>和对应的 <code>Setter</code> 是很好用的属性。</p>
+
+<pre><code>value
+writable
+enumerable
+configurable
+
+create -&gt; __proto__
+get -&gt; __defineGetter__ / __lookupGetter
+set -&gt; __defineSetter__ / __lookupSetter
+
+defineProperty / defineProperties -&gt; isPeopertyOf / hasOwnProperty
+
+getOwnPropertyName
+getOwnPropertyDescriptor
+
+preventExtensions -&gt; esExtensions
+
+seals -&gt; isSealed
+freeze -&gt; isFrozon 
+</code></pre>
+
+<h2 id="toc_9">toLocalString </h2>
+
+<p>如图，你可能还不知道 JavaScript 的 <code>toLocaleString</code> 还可以这么玩。</p>
+
+<pre><code>1234567..toLocaleString( &#39;zh-Hans-CN-u-nu-hanidec&#39;, {
+    useGrouping: false
+});
+//一二三四五六七
+1234567..toLocaleString( &#39;zh-Hans-CN-u-nu-hanidec&#39;, {
+    useGrouping: true
+});
+//一,二三四,五六七 
+</code></pre>
+
+<h2 id="toc_10">this语义</h2>
+
+<p>this 上下文只存在两种语义，一种是被当作方法调用，this 指向调用它的对象；一种是作为函数调用，指向 <code>Global</code> 对象（严格模式下为 undefined）。它没有作用域的限制，如下图所示，a 由于是作为函数被调用，所以它指向的是 window，故而返回 false。</p>
+
+<pre><code>var o = {
+    m: function () {
+        var that = this;
+        a();
+
+        function a () {
+            console.log( this === that );
+        }
+    }       
+}
+o.m();
+// false
+</code></pre>
+
+<h2 id="toc_11">类型 </h2>
+
+<p>JavaScript 可以被调用执行的均为 <code>Function</code> 类型，但是也存在可调用的 <code>Object</code>，如低版本 IE 中的一些宿主对象：<code>document.getElementById</code>、<code>alert</code> 等，在很多浏览器中<code>typeof</code> <code>RegExp</code> 同样是 Object。这绝对是一个不标准的实现，在浏览器摒弃/修正这些错误类型之前应该尽量少依赖它们。 </p>
+
+<h2 id="toc_12">IE8 getter/setter </h2>
+
+<p><code>Object.defineProperty</code> 虽然是 ES5 的东西，早在 IE8 就已经支持了，但支持得并不完善，比如 <code>writable</code>、<code>enumerable</code>、<code>configurable</code> 这些配置项设置就无效，IE8 下主要支持 <code>getter/setter</code>。</p>
+
+<h2 id="toc_13">JSON.stringify </h2>
+
+<p><code>JSON.stringify</code> 接受三个参数，很多人都知道第<code>三</code>个参数可以设置空白字符来美化输出，但是你可能不知道第<code>二</code>个参数的作用，它为 <code>{Array|Function}</code> 类型，如果为 <code>Array</code> 则用于过滤 <code>key</code>，如果为 <code>Function</code> 则可以对 <code>value</code> 做处理，如下。</p>
+
+<pre><code>var obj = {
+    a: {
+        b: {
+            c: 1,
+            d: 2
+        }
+    }
+}   JSON.stringify( obj, function ( k, v ) {
+    if ( typeof v === &#39;number&#39; ) {
+        return &#39;v&#39; + v;
+    } else {
+        return &#39;v&#39;;
+    }
+}, 2);
+// output
+&quot;{
+    &quot;a&quot;: {
+        &quot;b&quot;: {
+            &quot;c&quot;: &quot;v1&quot;,
+            &quot;d&quot;: &quot;v2&quot;
+        }
+    }
+}&quot; 
+</code></pre>
+
+<h2 id="toc_14">Symbol </h2>
+
+<p><code>ES6</code> 中添加了一种新的数据类型，<code>Symbol</code>，它是一种原始数据类型（图一），具备对象的特性（图二），并可以指向同一个引用（图三），能够作为对象的 <code>key</code> 但不可枚举（图四），内置的 <code>Symbol</code> 会影响程序的执行（图五），<code>Symbol.iterator</code> 是个举足轻重的符号，能够让元素具备迭代属性（图六），花样很多。<br/>
+ 附图见：<a href="http://weibo.com/1812166904/DqMwR8O6z">http://weibo.com/1812166904/DqMwR8O6z</a></p>
+
+<p>伪数组添加 <code>Symbol.iterator</code> 的几个办法：鸭式辨型的 <code>iterator</code> 函数、<code>yield</code> 函数和直接使用 <code>Array</code> 的遍历符号。<br/>
+ <br/>
+附图见：<a href="http://weibo.com/1812166904/DqMBYe">http://weibo.com/1812166904/DqMBYebPw</a></p>
+
+<h2 id="toc_15">Set/WeakSet</h2>
+
+<p><code>Set/WeakSet</code> 这种数据结构，不能说没用，但确实也没啥大用，前者就是个不允许出现重复成员的数组，顺便还带了点 ES6 的特性，后者虽说可以一定程度上防止内存泄漏，但是也容易出错，比如某个引用已经被垃圾回收了，再去使用它可能就返回 null。它们都是 ES6 的配套产物。而 Map/WeakMap 倒是两个非常不错的设计，常规的 Object 结构都为 String-Val 键值对，而它扩展为 AllType-Val，任意类型都可以作为它的 Key，无论是服务端编程还是客户端编程，这个属性都带来了极大的便利性。</p>
+
+<pre><code>var map = new Map();
+var o = { a: 1 };
+
+map.set( o, 555 );
+map.get( o );
+// 555  
+</code></pre>
+
+<h2 id="toc_16">正则 </h2>
+
+<p>理解正则零宽的含义：正则中所谓的零宽断言，类似于锚点字符，它们匹配指定的位置而不会匹配内容，如 ^ 匹配开头，$ 匹配结尾，b 匹配单词边界；(?=p) 匹配「接下来的字符与 p 匹配」的位置，(?!p) 匹配「接下来的字符不与 p 匹配」的位置。b 字符匹配单词边界，实际上就是匹配 w 与 W 之间的位置（w 匹配 [a-zA-Z0-9]）。很少会有人用到 B，它匹配的是非单词边界位置，简单理解就是 w &amp; w 之间位置或者 W &amp; W 之间位置。</p>
+
+<pre><code>&quot;hello    world&quot;.match(/\B\w+\B/g);
+// [&#39;ell&#39;, &#39;orl&#39;]
+&quot;hello     world&quot;.match(/\B\W+\B/g);
+// [&#39;   &#39;]
+</code></pre>
+
+<p>持续学习和分享… </p>
+
+<p>内容都是片段化的分享，比较多，也比较杂，就没有全部列举出来，感兴趣的同学可以 follow 我的 微博，我的想法和笔记都会在上面同步。</p>
+
+			</div>
+
+		
+	  
+		<footer>
+		 <p class="meta">
+
+			<strong>Categories:</strong>&nbsp; 
+			<span class="categories">
+			
+			    <a class='category' href='JavaScript.html'>JavaScript</a>&nbsp;
+			 
+			</span>
+		    </p>
+		    <p class="meta">
+		      
+		 </p>
+	    
+		<div class="sharing">
+			
+		</div>
+
+	    <p class="meta">
+	    
+	        <a class="basic-alignment left" href="14631251677698.html" 
+	        title="Previous Post: css3：radial-gradient">&laquo; css3：radial-gradient</a>
+	    
+	    
+	        <a class="basic-alignment right" href="14631211935835.html" 
+	        title="Next Post: 谈谈HTTP协议中的短轮询、长轮询、长连接和短连接">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接 &raquo;</a>
+	    
+	    </p>
+	  </footer>
+	</article>
+</div>
+ <aside class="sidebar"> 
+
+	<section>
+	  <h1>Categories</h1>
+	  <ul id="recent_posts">
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>JavaScript&nbsp;(5)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="jQuery.html"><strong>jQuery&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="css3.html"><strong>css3&nbsp;(9)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="other.html"><strong>other&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="JavaScript.html"><strong>http&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	  
+	      <li class="post">
+	        <a href="Backbone.html"><strong>Backbone&nbsp;(1)</strong></a>
+	        
+	        
+	        
+	      </li>
+	   
+	  </ul>
+	</section>
+	<section>
+	  <h1>Recent Posts</h1>
+	  <ul id="recent_posts">
+	  
+	      
+		      <li class="post">
+		        <a href="14631573927160.html">Backbone：了解model的set与事件触发</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631251677698.html">css3：radial-gradient</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631212906232.html">JavaScript：被忽视的细节</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631211935835.html">谈谈HTTP协议中的短轮询、长轮询、长连接和短连接</a>
+		      </li>
+	     
+	  
+	      
+		      <li class="post">
+		        <a href="14631105630408.html">JavaScript：throttle and debounce</a>
+		      </li>
+	     
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	  
+	      
+	   
+	  </ul>
+	</section>
+	
+</aside> </div></div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 -  -
+  <span class="credit">Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a> &nbsp;&nbsp; Theme by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+
+
+
+</body>
+</html>
